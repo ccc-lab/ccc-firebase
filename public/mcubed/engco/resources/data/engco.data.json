@@ -1,0 +1,50 @@
+{
+    "preamble": {
+    "intro": {
+      "type": "instructions",
+      "key_forward": " ",
+      "show_clickable_nav": true,
+      "allow_backward": false,
+      "pages": ["<div class=\"header row\"><div class=\"col-2 text-right\"><img class=\"logo\" src=\"../../assets/images/shield.png\" alt=\"UChicago Logo\"/></div><div class=\"col-10\"><h1>Language Processing Laboratory</h1><p class=\"lead\">Department of Linguistics, The University of Chicago</p></div></div><div><p class=\"mt-4 lead\">Thank you for your interest in our study!</p><p>As a reminder, this study runs best in <b>Chrome</b> or <b>Firefox</b>. If you are not using one of these browers, we recommend switching now to avoid future issues. When you are ready, please proceed by clicking the <strong>\"next\"</strong> button below.</p></div>"]
+    },
+    "consent": {
+      "type": "consent",
+      "requirements": "You must be at least 18 years old to participate in this study. ",
+      "purpose": "In this research, we are investigating the processes involved in the comprehension of sentences. ",
+      "procedures": "In this study, you will be asked to look at sets of images for a fixed period of time. After this, you will see another image and be asked to determine whether a statement about this image is true or false. ",
+      "time": "about 10 minutes",
+      "pay": "$1.00 USD",
+      "name": "Dr. Ming Xiang",
+      "address": "1115 E. 58th St., Rosenwald 205B, Chicago IL, 60637",
+      "phone": "(773) 702-8023",
+      "email": "mxiang@uchicago.edu"
+    },
+    "consent_check": {
+      "timeline": [{
+        "type": "instructions",
+        "key_forward": "",
+        "pages": ["<p class=\"lead\">Thank you for considering participation in this study!</p><p>We're sorry it wasn't for you. You may close this window and return your HIT. There is no penalty for returning our lab's HITs.</p>"]
+      }]
+    },
+    "demographics": {
+      "type": "demographics",
+      "placeholder": "null"
+    },
+    "demographics_check": {
+      "timeline": [{
+        "type": "instructions",
+        "key_forward": "",
+        "pages": ["<p class=\"lead\">Thank you for your interest in this study!</p><p>Unfortunately, you do not meet our requirements. You may close this window and return your HIT. There is no penalty for returning our lab's HITs.</p>"]
+      }]
+    },
+    "post_demographics": {
+      "type": "instructions",
+      "cont_key": [" "],
+      "key_forward": " ",
+      "button_label_next": "Start",
+      "show_clickable_nav": true,
+      "allow_backward": false,
+      "pages": ["<p class=\"lead\">Thank you for participating in our study!</p><p>In this experiment, you will first be shown three pictures, which you will have a few seconds to look at. During this time, please focus on the pictures. After a few seconds, the experiment will automatically continue. Next you will see a single picture and a sentence about that picture. Your job is to decide whether these sentences are true or false. If the content of the sentence is compatible with what the images show, then it is \"true\"; otherwise it is \"false\".</p><p><strong>Your responses in this experiment are timed. Please try to respond to each question as quickly and accurately as possible.</strong></p><p>To begin, please <strong>click the button below</strong>.</p>"]
+    }
+  }
+}
