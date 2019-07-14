@@ -324,7 +324,7 @@
           "key_forward": " ",
           "show_clickable_nav": true,
           "allow_backward": false,
-          "pages": ["You have completed the experiment!"],
+          "pages": ["You have completed the experiment! Please press space to save your results."],
           on_start: function(end) {
             console.log("Calling complete() method");
             Jeeliz.complete();
