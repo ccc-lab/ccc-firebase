@@ -99,9 +99,9 @@
     		ExperimentRecorder.plot(); //trace RAW RESULTS
 
     		//compute and trace AVG RESULTS :
-    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS']);
+    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf' /*'RESP'*/]);
     		var avgs={};
-    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS'].forEach(function(groupLabel){
+    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
     				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
     				var sampleNormalized=ExperimentRecorder.normalize_byFirstValue(sample);
@@ -207,15 +207,17 @@
 
     var makeTrial = function(stimulus, i) {
 
+      var audio;
+
+      switch(stimulus.type){
+          case 'experimental': audio = 'resources/sound/' + stimulus.condition + '_S' + stimulus.item + '.wav'; break;
+          case 'filler': audio = 'resources/sound/fillers/' + stimulus.condition + '_' + stimulus.item + '.wav'; break;
+          case 'fillerfiller': audio = 'resources/sound/fillerfillers/' + stimulus.condition + stimulus.item + '.wav'; break;
+      }
+
       return ({
         "type": "html-keyboard-response",
         "timeline": [
-          {
-            "stimulus": "",
-            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
-            "trial_duration": 2000,
-            "choices": jsPsych.NO_KEYS
-          },
           {
             on_start: function(trial) {
               ExperimentRecorder.addEvent(stimulus.condition);
@@ -227,59 +229,91 @@
           },
           {
             "type": "audio-keyboard-response",
-            "stimulus": 'resources/sound/' + stimulus.condition + '_S' + stimulus.item + '.wav',
+            "stimulus": audio,
             "prompt": "<div class='experiment-point'></div>",
             "trial_ends_after_audio": true,
             "choices": jsPsych.NO_KEYS
-        },
-        {
-          "stimulus": "",
-          "prompt": "<div class='experiment-point'></div>",
-          "trial_duration": 1000,
-          "choices": jsPsych.NO_KEYS
-        },
-        {
-          on_start: function(trial) {
-            ExperimentRecorder.addEvent("RESP");
           },
-          "type": "html-keyboard-response",
-          "prompt": '<p class="text-center">Pls rate using keyboard :B</p>',
-          "stimulus": '<p class="text-center">1 - 2 - 3 - 5 - 6 - 7 <br/>(v bad)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(v good)</p>',
-          "response_ends_trial": true,
-          choices: ["1", "2", "3", "4", "5", "6", "7"]
-        }]
+          {
+            "stimulus": "",
+            "prompt": "<div class='experiment-point'></div>",
+            "trial_duration": 1000,
+            "choices": jsPsych.NO_KEYS
+          }//,
+          /*{
+            on_start: function(trial) {
+              ExperimentRecorder.addEvent("RESP");
+            },
+            "type": "html-keyboard-response",
+            "prompt": '<p class="text-center large">Please rate using the keyboard</p>',
+            "stimulus": '<p class="text-center large">1 - 2 - 3 - 5 - 6 - 7 <br/>(very bad)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(very good)</p>',
+            "response_ends_trial": true,
+            choices: ["1", "2", "3", "4", "5", "6", "7"]
+          }*/
+        ]
       });
 
     }
     var initTrials = function() {
 
-      var shift = 1;
+      var cond_shift = 1;
+      var fill_shift = 1;
+
+      // Rep experimental and filler conditions to match number of filler_items
       var conditions = _.flatten(_.map([[],[],[],[],[]], function(item) {
-        return ["SOV", "SVO", "OSV", "OVS", "VSO", "VOS"];
+        return params.experimental_conditions;
+      }));
+      var filler_conditions = _.flatten(_.map([[],[],[],[]], function(item) {
+        return params.filler_conditions;
       }));
 
-      var stimuli = jsPsych.randomization.shuffle(_.map(conditions, function(condition, i) {
-        return ({'condition': condition, 'item': i+1});
-      }));
-
-      for(var j = 0; j < shift; j++) {
-        stimuli.push(stimuli.shift());
+      // Shift the conditions
+      for(var j = 0; j < cond_shift; j++) {
+        conditions.push(conditions.shift());
       }
+      for(var j = 0; j < fill_shift; j++) {
+        filler_conditions.push(filler_conditions.shift());
+      }
+
+      var stimuli = _.map(conditions, function(condition, i) {
+        return ({'type': 'experimental', 'condition': condition, 'item': i+1});
+      });
+
+      // Add filler-fillers
+      for(var i = 0; i < params.num_fillers; i++) {
+        stimuli.push({'type': 'fillerfiller', 'condition': 'F', 'item': i+1});
+      }
+
+      // Combine filler items and conditions and append + shuffle
+      // TODO: Frank is missing from ShortBare condition. Rep fillers Emma twice for now.
+      stimuli = jsPsych.randomization.shuffle(stimuli.concat(
+        _.chain(filler_conditions)
+        .zip(params.filler_items)
+        .map(function(item) {
+          return ({'type': 'filler', 'condition': item[0], 'item': item[1]});
+        }).value()));
 
       console.log(stimuli);
 
       var start = {
-          "type": "instructions",
-          "key_forward": " ",
-          "show_clickable_nav": true,
-          "allow_backward": false,
-          "pages": ["Press SPACE to begin."],
-          on_finish: function(start) {
-            Jeeliz.toggle();
-          },
+        "type": "instructions",
+        "key_forward": " ",
+        "show_clickable_nav": true,
+        "allow_backward": false,
+        "pages": ["Press SPACE to begin."],
+        on_finish: function(start) {
+          Jeeliz.toggle();
+        }
       };
 
       timeline.push(start);
+      timeline.push({
+        "stimulus": "",
+        "type": "html-keyboard-response",
+        "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
+        "trial_duration": 2000,
+        "choices": jsPsych.NO_KEYS
+      });
 
       _.each(stimuli, function(stimulus, i) {
         timeline.push(makeTrial(stimulus, i));
@@ -290,7 +324,7 @@
           "key_forward": " ",
           "show_clickable_nav": true,
           "allow_backward": false,
-          "pages": ["Press SPACE to begin."],
+          "pages": ["You have completed the experiment!"],
           on_start: function(end) {
             console.log("Calling complete() method");
             Jeeliz.complete();
@@ -298,7 +332,8 @@
           // NOTE: Add this function to your last trial and uncomment its contents.
           // This saves the experimental data and logs the worker so that they cannot do the same experiment twice.
           on_finish: function(trial) {
-            //saveData(jsPsych.data.dataAsCSV(), dataRef);
+
+            saveData(jsPsych.data.get().csv(), dataRef);
 
             // NOTE: Change this string to the same string you used in main.js
             //addWorker(params.workerId, "SAMPLE");
