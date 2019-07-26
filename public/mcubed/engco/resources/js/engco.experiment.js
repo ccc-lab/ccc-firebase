@@ -35,8 +35,8 @@
 
   		var isFaceDetected=(detectedState.detected>_settings.faceDetectedThreshold);
   		if (0 && !isFaceDetected){
-  			//that.stop();
-  			//alert('ERROR : the face is not detected. Please take a look in the debug view. The experiment has been aborted.');
+  			that.stop();
+  			alert('ERROR : the face is not detected. Please take a look in the debug view. The experiment has been aborted.');
   			return;
   		}
 
@@ -140,12 +140,26 @@
      */
     var timeline = [];
 
+    var exptParams = {
+      shift: parseInt(params.id, 10),
+      test: (params.id == "test" ? true : false)
+    }
+
+    // Counter-balance response direction
+    if(exptParams.shift % 2) {
+      exptParams.left = "very good";
+      exptParams.right = "very bad";
+    } else {
+      exptParams.left = "very bad";
+      exptParams.right = "very good";
+    }
+
     /** The current subject.
      * @type {object}
      * @param {string} id - The subject's Worker ID or SONA subject number.
     */
     var subject = { //NOTE: Add more subject parameters here if needed.
-      id: params.workerId
+      id: params.id
     }
 
     /** Return the subject's ID.
@@ -209,6 +223,16 @@
 
       var audio;
 
+      // Hacky solution to variable stimulus names
+      if(stimulus.item == 'Emma|Chefs'){
+        if(stimulus.condition == 'ShortDOf') {
+          stimulus.item = 'Chefs';
+        } else {
+          stimulus.item = 'Emma';
+        }
+      }
+      if(stimulus.condition == 'LongBare' && stimulus.item == 'Frank') return;
+
       switch(stimulus.type){
           case 'experimental': audio = 'resources/sound/' + stimulus.condition + '_S' + stimulus.item + '.wav'; break;
           case 'filler': audio = 'resources/sound/fillers/' + stimulus.condition + '_' + stimulus.item + '.wav'; break;
@@ -245,19 +269,21 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "prompt": '<p class="text-center large">Please rate using the keyboard</p>',
-            "stimulus": '<p class="text-center large">1 - 2 - 3 - 4 - 5 - 6 - 7 <br/>(very bad)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(very good)</p>',
+            "prompt": '<p class="text-center large">Please rate the acceptability of the sentence you just heard using the keyboard.</p>',
+            "stimulus": '<p class="text-center large">1 - 2 - 3 - 4 - 5 - 6 - 7 <br/>' + exptParams.left + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + exptParams.right + '</p>',
             "response_ends_trial": true,
-            choices: ["1", "2", "3", "4", "5", "6", "7"]
+            choices: ["1", "2", "3", "4", "5", "6", "7"],
+            on_finish: function(){
+              var data = jsPsych.data.getLastTrialData().values()[0];
+              var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
+              jsPsych.data.get().addToLast({key_press_processed: resp});
+            }
           }
         ]
       });
 
     }
     var initTrials = function() {
-
-      var cond_shift = 1;
-      var fill_shift = 1;
 
       // Rep experimental and filler conditions to match number of filler_items
       var conditions = _.flatten(_.map([[],[],[],[],[]], function(item) {
@@ -268,10 +294,10 @@
       }));
 
       // Shift the conditions
-      for(var j = 0; j < cond_shift; j++) {
+      for(var j = 0; j < exptParams.shift; j++) {
         conditions.push(conditions.shift());
       }
-      for(var j = 0; j < fill_shift; j++) {
+      for(var j = 0; j < exptParams.shift; j++) {
         filler_conditions.push(filler_conditions.shift());
       }
 
@@ -285,7 +311,6 @@
       }
 
       // Combine filler items and conditions and append + shuffle
-      // TODO: Frank is missing from ShortBare condition. Rep fillers Emma twice for now.
       stimuli = jsPsych.randomization.shuffle(stimuli.concat(
         _.chain(filler_conditions)
         .zip(params.filler_items)
@@ -293,20 +318,6 @@
           return ({'type': 'filler', 'condition': item[0], 'item': item[1]});
         }).value()));
 
-      console.log(stimuli);
-
-      var start = {
-        "type": "instructions",
-        "key_forward": " ",
-        "show_clickable_nav": true,
-        "allow_backward": false,
-        "pages": ["Press SPACE to begin."],
-        on_finish: function(start) {
-          Jeeliz.toggle();
-        }
-      };
-
-      timeline.push(start);
       timeline.push({
         "stimulus": "",
         "type": "html-keyboard-response",
@@ -316,37 +327,103 @@
       });
 
       _.each(stimuli, function(stimulus, i) {
-        timeline.push(makeTrial(stimulus, i));
+        var trial = makeTrial(stimulus, i);
+        if(trial) { timeline.push(trial); }
       });
 
-      var end = {
-          "type": "instructions",
-          "key_forward": " ",
-          "show_clickable_nav": true,
-          "allow_backward": false,
-          "pages": ["You have completed the experiment! Please press space to save your results."],
-          on_start: function(end) {
-            console.log("Calling complete() method");
-            Jeeliz.complete();
+    }
+
+    var initMockTrials = function() {
+      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf'];
+      _.each(conditions, function(condition) {
+        timeline.push(makeMockTrial(condition));
+      })
+    }
+
+    var makeMockTrial = function(condition) {
+      return ({
+        "type": "html-keyboard-response",
+        "timeline": [
+          {
+            on_start: function(trial) {
+              ExperimentRecorder.addEvent(condition);
+            },
+            "stimulus": "",
+            "prompt": "<div class='experiment-point'></div>",
+            "trial_duration": 500,
+            "choices": jsPsych.NO_KEYS
           },
-          // NOTE: Add this function to your last trial and uncomment its contents.
-          // This saves the experimental data and logs the worker so that they cannot do the same experiment twice.
-          on_finish: function(trial) {
-
-            saveData(jsPsych.data.get().csv(), dataRef);
-
-            // NOTE: Change this string to the same string you used in main.js
-            //addWorker(params.workerId, "SAMPLE");
+          {
+            "type": "audio-keyboard-response",
+            "stimulus": 'resources/sound/beep.wav',
+            "prompt": "<div class='experiment-point'></div>",
+            "trial_ends_after_audio": true,
+            "choices": jsPsych.NO_KEYS
+          },
+          {
+            "stimulus": "",
+            "prompt": "<div class='experiment-point'></div>",
+            "trial_duration": 500,
+            "choices": jsPsych.NO_KEYS
+          },
+          {
+            on_start: function(trial) {
+              ExperimentRecorder.addEvent("RESP");
+            },
+            "type": "html-keyboard-response",
+            "prompt": '<p class="text-center large">Please rate the acceptability of the sentence you just heard using the keyboard.</p>',
+            "stimulus": '<p class="text-center large">1 - 2 - 3 - 4 - 5 - 6 - 7 <br/>' + exptParams.left + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + exptParams.right + '</p>',
+            "response_ends_trial": true,
+            choices: ["1", "2", "3", "4", "5", "6", "7"],
+            on_finish: function(){
+              var data = jsPsych.data.getLastTrialData().values()[0];
+              var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
+              jsPsych.data.get().addToLast({key_press_processed: resp});
+            }
           }
-      };
-      timeline.push(end);
+        ]
+      });
     }
 
     /** Build the experiment.
     */
     this.createTimeline = function() {
       //initPreamble();
-      initTrials();
-    }
 
-  };
+      var start = {
+        "type": "instructions",
+        "key_forward": " ",
+        "show_clickable_nav": true,
+        "allow_backward": false,
+        "pages": ["<p>Press SPACE to begin.</p>"],
+        on_finish: function(start) {
+          Jeeliz.toggle();
+        }
+      };
+
+      timeline.push(start);
+
+      if(exptParams.test) {
+        initMockTrials();
+      }
+      else { initTrials(); }
+
+    var end = {
+        "type": "instructions",
+        "key_forward": "S",
+        "show_clickable_nav": false,
+        "allow_backward": false,
+        "pages": ["<p>You have completed the experiment! Please leave this window open and notify the experimenter.</p><p>EXPERIMENTER: Press 'S' to save the participant's data."],
+        on_start: function(end) {
+          console.log("Calling complete() method");
+          Jeeliz.complete();
+        },
+        on_finish: function() {
+            jsPsych.data.get().localSave('csv', subject.id + '_raw.csv');
+        }
+    };
+
+    timeline.push(end);
+
+  }
+};
