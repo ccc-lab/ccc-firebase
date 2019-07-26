@@ -70,12 +70,12 @@ form {
 }
 
 body {
-  background-color: #f3f3f3 !important;
+  background-color: #ffffff;
   font-family: 'Open Sans', 'Arial, sans-serif;
 }
 
 p, h1, h2, h3, h4  {
-  margin: 20px 15px 20px 15px !important;
+  margin: 20px 15px 20px 15px;
 }
 
 .contact-info {
@@ -108,13 +108,13 @@ button {
 }
 
 .header {
-  background-color: #800000;
-  color: #D6D6CE;
+  background-color: #002d62;
+  color: #ffffff;
   padding: 1rem 15px;
 }
 
 .footer {
-  background-color: #800000;
+  background-color: #002d62;
   color: #D6D6CE;
   padding: 1rem 15px;
 }
@@ -124,18 +124,26 @@ button {
 }
 
 div.header h1 {
-  font-size: 2.5rem;
-  color: #f3f3f3;
+  font-size: 3.5rem;
+  color: #ffffff;
   font-weight: 300;
+  margin: 0;
+  border-left: 2px solid #fff;
+  padding-left: 30px;
+  padding-top: 20px;
 }
 
 div.header p {
   font-size: 1.25rem;
   font-weight: 300;
+  margin: 0;
+  border-left: 2px solid #fff;
+  padding-left: 30px;
+  padding-bottom: 30px;
 }
 
 .logo {
-  width: 100px;
+  width: 140px;
 }
 
 hr.style-eight { padding: 0; border: none; border-top: medium double #D6D6CE; color: #D6D6CE; text-align: center; } hr.style-eight:after { content: "§"; display: inline-block; position: relative; top: -0.7em; font-size: 1.5em; padding: 0 0.25em; }
