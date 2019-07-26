@@ -239,17 +239,17 @@
             "prompt": "<div class='experiment-point'></div>",
             "trial_duration": 1000,
             "choices": jsPsych.NO_KEYS
-          }//,
-          /*{
+          },
+          {
             on_start: function(trial) {
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
             "prompt": '<p class="text-center large">Please rate using the keyboard</p>',
-            "stimulus": '<p class="text-center large">1 - 2 - 3 - 5 - 6 - 7 <br/>(very bad)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(very good)</p>',
+            "stimulus": '<p class="text-center large">1 - 2 - 3 - 4 - 5 - 6 - 7 <br/>(very bad)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(very good)</p>',
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"]
-          }*/
+          }
         ]
       });
 
