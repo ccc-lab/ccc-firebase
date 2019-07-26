@@ -25,7 +25,7 @@ If you need to update the experiment:
 
 2. Next, enter the following to pull from the Git repo:
 
-     `git pull https://github.com/ccc-lab/ccc-firebase.git`
+     `git pull`
 
 ### Running the experiment
 
