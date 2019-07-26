@@ -1,6 +1,10 @@
 # ccc-firebase
 Firebase-hosted online experiments for the Contact, Cognition and Change Lab.
 
+## Stimuli
+
+Stimuli for the experiments are hosted on Google Drive. Please contact arkram {at} umich {dot} edu or savithry {at} umich {dot} edu for access. Once downloaded, stimuli should be placed in the `/resources/sound` (or `/resources/images`) folder of the experiment they correspond to.
+
 ## Instructions for running experiments on the lab laptop (Ubuntu)
 
 ### BEFORE RUNNING ANYTHING:
