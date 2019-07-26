@@ -37,7 +37,7 @@ If you need to update the experiment:
 
 2. Launch Google Chrome and paste into the address bar the following URL:
 
-  http://localhost:5000/mcubed/engco/experiment.html
+  http://localhost:5000/mcubed/engco/launcher.html
 
 3. Open a new terminal window (ctrl, alt, t). To get more features that adjust the camera, enter the following in the terminal:
 
