@@ -99,9 +99,9 @@
     		ExperimentRecorder.plot(); //trace RAW RESULTS
 
     		//compute and trace AVG RESULTS :
-    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf' /*'RESP'*/]);
+    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
     		var avgs={};
-    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf'].forEach(function(groupLabel){
+    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
     				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
     				var sampleNormalized=ExperimentRecorder.normalize_byFirstValue(sample);
@@ -115,7 +115,6 @@
     		ExperimentRecorder.plot_averages(avgs);
 
     		//Some CSS & UI stuffs :
-    		TabManager.open('tabLink-results', 'tabContent-results');
     		setCSSdisplay('results-noResults', 'none');
     		setCSSdisplay('results-caption', 'block');
     		setCSSdisplay('results-plot', 'inline-block');
@@ -123,6 +122,12 @@
     		setCSSdisplay('resultsAvg-noResults', 'none');
     		setCSSdisplay('resultsAvg-caption', 'block');
     		setCSSdisplay('resultsAvg-plot', 'inline-block');
+
+        var gd = document.getElementById("resultsRaw-noResults")
+        gd.innerHTML = JSON.stringify(document.getElementById("results-plot").data);
+
+        var gd = document.getElementById("resultsAvgText-noResults")
+        gd.innerHTML = JSON.stringify(document.getElementById("resultsAvg-plot").data);
     	}
 
   	} //end that
@@ -334,7 +339,7 @@
     }
 
     var initMockTrials = function() {
-      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf',' LongDOf'];
+      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
       _.each(conditions, function(condition) {
         timeline.push(makeMockTrial(condition));
       })
