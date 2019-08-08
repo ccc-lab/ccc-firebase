@@ -99,7 +99,7 @@
     		ExperimentRecorder.plot(); //trace RAW RESULTS
 
     		//compute and trace AVG RESULTS :
-    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
+    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
     		var avgs={};
     		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
@@ -308,7 +308,7 @@
     }
 
     var initMockTrials = function() {
-      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
+      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
       _.each(conditions, function(condition) {
         timeline.push(makeMockTrial(condition));
       })
