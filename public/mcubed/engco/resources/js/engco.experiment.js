@@ -101,7 +101,7 @@
     		//compute and trace AVG RESULTS :
     		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
     		var avgs={};
-    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'F', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
+    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
     				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
     				var sampleNormalized=ExperimentRecorder.normalize_byFirstValue(sample);
@@ -150,7 +150,6 @@
       test: (params.id == "test" ? true : false)
     }
 
-    // Counter-balance response direction
     if(exptParams.shift % 2) {
       exptParams.left = "very good";
       exptParams.right = "very bad";
@@ -227,21 +226,14 @@
     var makeTrial = function(stimulus, i) {
 
       var audio;
+      console.log(stimulus);
 
-      // Hacky solution to variable stimulus names
-      if(stimulus.item == 'Emma|Chefs'){
-        if(stimulus.condition == 'ShortDOf') {
-          stimulus.item = 'Chefs';
-        } else {
-          stimulus.item = 'Emma';
-        }
-      }
-      if(stimulus.condition == 'LongBare' && stimulus.item == 'Frank') return;
-
-      switch(stimulus.type){
-          case 'experimental': audio = 'resources/sound/' + stimulus.condition + '_S' + stimulus.item + '.wav'; break;
-          case 'filler': audio = 'resources/sound/fillers/' + stimulus.condition + '_' + stimulus.item + '.wav'; break;
-          case 'fillerfiller': audio = 'resources/sound/fillerfillers/' + stimulus.condition + stimulus.item + '.wav'; break;
+      if(stimulus.condition == 'FILLER') {
+        audio = 'resources/sound/fillerfillers/' + stimulus.audio + '.wav';
+      } else if(_.contains(params.experimental_conditions, stimulus.condition)) {
+        audio = 'resources/sound/' + stimulus.audio + '.wav';
+      } else {
+        audio = 'resources/sound/fillers/' + stimulus.audio + '.wav';
       }
 
       return ({
@@ -281,7 +273,12 @@
             on_finish: function(){
               var data = jsPsych.data.getLastTrialData().values()[0];
               var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
-              jsPsych.data.get().addToLast({key_press_processed: resp});
+              jsPsych.data.get().addToLast({
+                key_press_processed: resp,
+                id: stimulus.id,
+                audio: stimulus.audio,
+                condition: stimulus.condition
+              });
             }
           }
         ]
@@ -290,38 +287,10 @@
     }
     var initTrials = function() {
 
-      // Rep experimental and filler conditions to match number of filler_items
-      var conditions = _.flatten(_.map([[],[],[],[],[]], function(item) {
-        return params.experimental_conditions;
-      }));
-      var filler_conditions = _.flatten(_.map([[],[],[],[]], function(item) {
-        return params.filler_conditions;
-      }));
+      console.log((exptParams.shift - 1) % 6);
 
-      // Shift the conditions
-      for(var j = 0; j < exptParams.shift; j++) {
-        conditions.push(conditions.shift());
-      }
-      for(var j = 0; j < exptParams.shift; j++) {
-        filler_conditions.push(filler_conditions.shift());
-      }
-
-      var stimuli = _.map(conditions, function(condition, i) {
-        return ({'type': 'experimental', 'condition': condition, 'item': i+1});
-      });
-
-      // Add filler-fillers
-      for(var i = 0; i < params.num_fillers; i++) {
-        stimuli.push({'type': 'fillerfiller', 'condition': 'F', 'item': i+1});
-      }
-
-      // Combine filler items and conditions and append + shuffle
-      stimuli = jsPsych.randomization.shuffle(stimuli.concat(
-        _.chain(filler_conditions)
-        .zip(params.filler_items)
-        .map(function(item) {
-          return ({'type': 'filler', 'condition': item[0], 'item': item[1]});
-        }).value()));
+      var list = params.item_list[(exptParams.shift - 1) % 6];
+      var stimuli = _.zip(list.id, list.audio, list.condition);
 
       timeline.push({
         "stimulus": "",
@@ -332,7 +301,7 @@
       });
 
       _.each(stimuli, function(stimulus, i) {
-        var trial = makeTrial(stimulus, i);
+        var trial = makeTrial(_.object(["id", "audio", "condition"], stimulus), i);
         if(trial) { timeline.push(trial); }
       });
 
