@@ -100,7 +100,11 @@
 
     		//compute and trace AVG RESULTS :
     		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
-    		var avgs={};
+
+        var gd = document.getElementById("resultsRaw-noResults")
+        gd.innerHTML = "<pre>" + JSON.stringify(groupedValues, null, 4) + "</pre>";
+
+        var avgs={};
     		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
     				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
@@ -123,11 +127,8 @@
     		setCSSdisplay('resultsAvg-caption', 'block');
     		setCSSdisplay('resultsAvg-plot', 'inline-block');
 
-        var gd = document.getElementById("resultsRaw-noResults")
-        gd.innerHTML = "<pre>" + JSON.stringify(document.getElementById("results-plot").data, null, 4) + "</pre>";
-
         var gd = document.getElementById("resultsAvgText-noResults")
-        gd.innerHTML = "<pre>" + JSON.stringify(document.getElementById("resultsAvg-plot").data, null, 4) + "</pre>";
+        gd.innerHTML = "<pre>" + JSON.stringify(avgs, null, 4) + "</pre>";
     	}
 
   	} //end that
@@ -323,20 +324,20 @@
               ExperimentRecorder.addEvent(condition);
             },
             "stimulus": "",
-            "prompt": "<div class='experiment-point'></div>",
+            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS
           },
           {
             "type": "audio-keyboard-response",
             "stimulus": 'resources/sound/beep.wav',
-            "prompt": "<div class='experiment-point'></div>",
+            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
             "trial_ends_after_audio": true,
             "choices": jsPsych.NO_KEYS
           },
           {
             "stimulus": "",
-            "prompt": "<div class='experiment-point'></div>",
+            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS
           },
@@ -366,13 +367,20 @@
 
       var start = {
         "type": "instructions",
-        "key_forward": " ",
-        "show_clickable_nav": true,
-        "allow_backward": false,
-        "pages": ["<p>Press SPACE to begin.</p>"],
-        on_finish: function(start) {
-          Jeeliz.toggle();
-        }
+        "timeline": [{
+          "show_clickable_nav": true,
+          "allow_backward": false,
+          "pages": ["<p>In this experiment, you will listen to a series of sentences.</p><p>After each sentence, you will be asked to rate how natural the sentence sounds.</p><p>A natural sentence is one that you can imagine saying yourself or hearing from someone you know; an unnatural sentence is one that sounds odd—you wouldn't quite say it that way, or it is not grammatical.</p>"],
+        },
+        {
+          "key_forward": " ",
+          "show_clickable_nav": false,
+          "allow_backward": false,
+          "pages": ["<p>This experiment will take about 20 minutes to complete.</p><p>Press SPACE when you are ready to begin.</p>"],
+          on_finish: function(start) {
+            Jeeliz.toggle();
+          }
+        }]
       };
 
       timeline.push(start);
