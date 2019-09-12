@@ -266,8 +266,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "prompt": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "stimulus": '<p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
+            "stimulus": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
+            "prompt": '<br/><br/><br/><p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
@@ -345,8 +345,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "prompt": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "stimulus": '<p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
+            "stimulus": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
+            "prompt": '<br/><br/><br/><p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
