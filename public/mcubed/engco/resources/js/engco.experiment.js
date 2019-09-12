@@ -124,10 +124,10 @@
     		setCSSdisplay('resultsAvg-plot', 'inline-block');
 
         var gd = document.getElementById("resultsRaw-noResults")
-        gd.innerHTML = JSON.stringify(document.getElementById("results-plot").data);
+        gd.innerHTML = "<pre>" + JSON.stringify(document.getElementById("results-plot").data, null, 4) + "</pre>";
 
         var gd = document.getElementById("resultsAvgText-noResults")
-        gd.innerHTML = JSON.stringify(document.getElementById("resultsAvg-plot").data);
+        gd.innerHTML = "<pre>" + JSON.stringify(document.getElementById("resultsAvg-plot").data, null, 4) + "</pre>";
     	}
 
   	} //end that
