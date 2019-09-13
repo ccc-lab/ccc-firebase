@@ -70,12 +70,16 @@ var ExperimentRecorder=(function(){
 				label: label,
 				ts: getTime()
 			});
-		},	
+		},
 
 		start: function(){ //clear all values and start
 			_isRunning=true;
 			_record.splice(0, _record.length);
 			_ts0=Date.now();
+		},
+
+		toggle_pause: function() {
+			_isRunning = !_isRunning;
 		},
 
 		end: function(){ //called when the experiment is over
@@ -257,7 +261,7 @@ var ExperimentRecorder=(function(){
 				var timestamps=recs.map(function(rec){
 					return rec.ts;
 				});
-				
+
 				var valKeys=Object.keys(recs[0].val);
 				valKeys.forEach(function(valKey){
 					var vals=recs.map(function(rec){
@@ -337,7 +341,7 @@ var ExperimentRecorder=(function(){
 				    }
 				}
 			});
-			
+
 			var layout = {
 			  shapes: shapes
 			};
