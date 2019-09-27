@@ -99,13 +99,13 @@
     		ExperimentRecorder.plot(); //trace RAW RESULTS
 
     		//compute and trace AVG RESULTS :
-    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
+    		var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OVS', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
 
         var gd = document.getElementById("resultsRaw-noResults")
         gd.innerHTML = "<pre>" + JSON.stringify(groupedValues, null, 4) + "</pre>";
 
         var avgs={};
-    		['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
+    		['SVO', 'SOV', 'OSV', 'OVS', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
     			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
     				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
     				var sampleNormalized=ExperimentRecorder.normalize_byFirstValue(sample);
@@ -304,7 +304,7 @@
     }
 
     var initMockTrials = function() {
-      var conditions = ['SVO', 'SOV', 'OSV', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
+      var conditions = ['SVO', 'SOV', 'OSV', 'OVS', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
       _.each(conditions, function(condition) {
         timeline.push(makeMockTrial(condition));
       })
