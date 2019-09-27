@@ -151,13 +151,8 @@
       test: (params.id == "test" ? true : false)
     }
 
-    if(exptParams.shift % 2) {
-      exptParams.left = "very natural";
-      exptParams.right = "very unnatural";
-    } else {
-      exptParams.left = "very natural";
-      exptParams.right = "very unnatural";
-    }
+    exptParams.left = "very natural";
+    exptParams.right = "very unnatural";
 
     /** The current subject.
      * @type {object}
