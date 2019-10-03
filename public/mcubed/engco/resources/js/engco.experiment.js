@@ -151,8 +151,8 @@
       test: (params.id == "test" ? true : false)
     }
 
-    exptParams.left = "very natural";
-    exptParams.right = "very unnatural";
+    exptParams.left = "very<br/>natural";
+    exptParams.right = "very<br/>unnatural";
 
     /** The current subject.
      * @type {object}
@@ -262,8 +262,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "stimulus": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "prompt": '<br/><br/><br/><p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
+            "stimulus": '<p class="text-center huge">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
+            "prompt": '<br/><br/><br/><p class="text-center huge"><table class="huge" style="text-align: center;"><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>' + exptParams.left + '</td><td></td><td></td><td>neither natural nor unnatural</td><td></td><td></td><td>' + exptParams.right + '</td></table></p>',
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
@@ -291,7 +291,7 @@
       timeline.push({
         "stimulus": "",
         "type": "html-keyboard-response",
-        "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
+        "prompt": "<div class='experiment-point'><br/><br/>Look at<br/>this circle</div>",
         "trial_duration": 2000,
         "choices": jsPsych.NO_KEYS
       });
@@ -341,8 +341,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "stimulus": '<p class="text-center large">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "prompt": '<br/><br/><br/><p class="text-center large"><table style="text-align: center;"><tr><td>1<br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/>' + exptParams.right + '</td></table></p>',
+            "stimulus": '<p class="text-center huge">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
+            "prompt": '<br/><br/><br/><p class="text-center huge"><table class="huge" style="text-align: center;"><tr><td>1<br/><br/><br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/><br/><br/>' + exptParams.right + '</td></table></p>',
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
@@ -365,13 +365,13 @@
         "timeline": [{
           "show_clickable_nav": true,
           "allow_backward": false,
-          "pages": ["<p>In this experiment, you will listen to a series of sentences.</p><p>After each sentence, you will be asked to rate how natural the sentence sounds.</p><p>A natural sentence is one that you can imagine saying yourself or hearing from someone you know; an unnatural sentence is one that sounds odd—you wouldn't quite say it that way, or it is not grammatical.</p>"],
+          "pages": ['<p class="huge">In this experiment, you will listen to a series of sentences.</p><p class="huge">After each sentence, you will be asked to rate how natural the sentence sounds.</p><p class="huge">A natural sentence is one that you can imagine saying yourself or hearing from someone you know; an unnatural sentence is one that sounds odd—you wouldn\'t quite say it that way, or it is not grammatical.</p>'],
         },
         {
           "key_forward": " ",
           "show_clickable_nav": false,
           "allow_backward": false,
-          "pages": ["<p>This experiment will take about 20 minutes to complete.</p><p>Press SPACE when you are ready to begin.</p>"],
+          "pages": ['<p class="huge">This experiment will take about 20 minutes to complete.</p><p class="huge">Press SPACE when you are ready to begin.</p>'],
           on_finish: function(start) {
             Jeeliz.toggle();
           }

@@ -218,7 +218,8 @@ a.list-item:hover {
 }
 
 .huge {
-  font-size: 200%;
+  font-size: 180%;
+  line-height: 180%
 }
 
 table {

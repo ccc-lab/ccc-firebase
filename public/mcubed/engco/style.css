@@ -109,19 +109,20 @@ a:hover {color: white;}
 .experiment-point {
 	background-image: url('resources/images/disc.svg');
 	color: white;
-	font-size: 14pt;
+	font-size: 30pt;
 	box-sizing: border-box;
 	padding-top: 40px;
 	position: fixed;
 	text-align: center;
 	font-weight: bold;
 	font-variant: small-caps;
-	width: 140px;
-	height: 140px;
-	margin-top: -70px;
-	margin-left: -70px;
+	width: 300px;
+	height: 300px;
+	margin-top: -120px;
+	margin-left: -120px;
 	left: 50%;
 	top: 50%;
+	background-size: 100% 100%;
 }
 
 /* RAW RESULTS TAB */
