@@ -180,7 +180,8 @@
     */
     this.addPropertiesTojsPsych = function () {
       jsPsych.data.addProperties({
-        workerId: subject.id
+        subject: subject.id,
+        list: (exptParams.shift - 1) % 6
       });
     }
 
