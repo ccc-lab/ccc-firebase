@@ -36,9 +36,9 @@
     ],
     "num_fillers": 32,
     "file_locations": {
-      "critical": "resources/sound/english/",
-      "subexperiment": "resources/sound/english/fillers/",
-      "fillers": "resources/sound/english/fillerfillers/"
+      "critical": "resources/sound/en/",
+      "subexperiment": "resources/sound/en/fillers/",
+      "fillers": "resources/sound/en/fillerfillers/"
     },
     "trial_instructions": {
       "stimulus": "<p class=\"text-center huge\">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>",

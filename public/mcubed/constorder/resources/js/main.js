@@ -58,6 +58,6 @@ function initializeExperiment(experiment) {
 }
 
 $( document ).ready(function() {
-    var language = jsPsych.data.urlVariables().language;
+    var language = jsPsych.data.urlVariables().lang;
     attemptLoad("resources/data/" + language + ".data.json");
 });

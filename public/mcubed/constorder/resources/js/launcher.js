@@ -23,11 +23,11 @@ function submit() {
   else {
     $('#code-form').hide();
 
-    if(params.language == 'english') {
-      $('#link1').attr('href', 'experiment.html?language=english&id=' + code);
+    if(params.lang == 'en') {
+      $('#link1').attr('href', 'experiment.html?lang=en&id=' + code);
       $('#code-confirm').html('You have entered the following ID: <strong>' + code + '</strong>');
     } else {
-      $('#link1').attr('href', 'experiment.html?language=spanish&id=' + code);
+      $('#link1').attr('href', 'experiment.html?lang=sp&id=' + code);
       $('#code-confirm').html('You have entered the following ID: <strong>' + code + '</strong>');
     }
     $('#studylinks').show();
@@ -38,7 +38,7 @@ $('document').ready(function() {
 
   var params = jsPsych.data.urlVariables();
 
-  if(params.language == 'english') {
+  if(params.language == 'en') {
     launcher_title = "Experiment Launcher";
 
     id_text = "Please enter the subject's ID number:";
