@@ -58,5 +58,6 @@ function initializeExperiment(experiment) {
 }
 
 $( document ).ready(function() {
-    attemptLoad("resources/data/engco.data.json");
+    var language = jsPsych.data.urlVariables().language;
+    attemptLoad("resources/data/" + language + ".data.json");
 });

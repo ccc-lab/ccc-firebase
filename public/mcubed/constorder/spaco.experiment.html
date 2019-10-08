@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Experimento</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- jQuery, Underscore, jsPsych -->
+
+        <script src="../../src/vendor/jquery-3.2.1/js/jquery.min.js"></script>
+        <script src="../../src/vendor/underscore-1.8.3/js/underscore.min.js" type="text/javascript"></script>
+        <script src="../../src/vendor/jspsych-6.0.1/js/jspsych.js" type="text/javascript"></script>
+
+        <!-- jsPsych plugins -->
+
+        <script src="../../src/vendor/jspsych-6.0.1/plugins/jspsych-consent.js" type="text/javascript"></script>
+        <script src="../../src/vendor/jspsych-6.0.1/plugins/jspsych-demographics.js" type="text/javascript"></script>
+        <script src="../../src/vendor/jspsych-6.0.1/plugins/jspsych-instructions.js" type="text/javascript"></script>
+        <script src="../../src/vendor/jspsych-6.0.1/plugins/jspsych-audio-keyboard-response.js" type="text/javascript"></script>
+        <script src="../../src/vendor/jspsych-6.0.1/plugins/jspsych-html-keyboard-response.js" type="text/javascript"></script>
+
+        <!-- Experiment code and utilities go here -->
+
+        <script src="../../src/js/utils.js" type="text/javascript"></script>
+        <script src="resources/js/spaco.experiment.js" type="text/javascript"></script>
+        <script src="resources/js/spaco.main.js" type="text/javascript"></script>
+
+        <!-- Vendor stylesheets (Bootstrap, jsPsych, FontAwesome) -->
+
+        <link href="../../src/vendor/bootstrap-4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+        <link href="../../src/vendor/jspsych-6.0.1/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <link href="../../src/vendor/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <!-- Custom stylesheets -->
+
+        <link rel='stylesheet' type='text/css' href='jeeliz.style.css' />
+        <link href="../../src/css/style.css" rel="stylesheet" type="text/css"></link>
+
+        <!-- include the main pupillometry script : -->
+        <script type="text/javascript" src="../../src/vendor/jeeliz/dist/jeelizPupillometry.js"></script>
+
+        <!-- include the helpers : -->
+        <script type="text/javascript" src="../../src/vendor/jeeliz/helpers/TabManager.js"></script>
+        <script type="text/javascript" src="../../src/vendor/jeeliz/libs/plotly/plotly-1.39.2.min.js"></script>
+        <script type="text/javascript" src="../../src/vendor/jeeliz/helpers/ExperimentRecorder.js"></script>
+
+    </head>
+
+    <body onload="Jeeliz.init();">
+
+        <!-- Tab links -->
+        <div class="jeeliz tabLinks">
+          <button class="tabLink tabLinkActive" onclick="TabManager.open(event, 'tabContent-debugView')">Debug</button>
+          <button class="tabLink" onclick="TabManager.open(event, 'tabContent-experiment')">Experimento</button>
+          <button class="tabLink" id='tabLink-results' onclick="TabManager.open(event, 'tabContent-results')">Resultados (gráfico)</button>
+          <button class="tabLink" id='tabLink-resultsRaw' onclick="TabManager.open(event, 'tabContent-resultsRaw')">Resultados (texto)</button>
+          <button class="tabLink" onclick="TabManager.open(event, 'tabContent-about')">Sobre el Experimento</button>
+        </div>
+
+        <!-- Tab content -->
+        <div class='jeeliz tabContent' style='display: block' id='tabContent-debugView'>
+            <canvas width="1024" height="1024" id='jeePupilCanvas'></canvas>
+            <div class='jeePupilControls'>
+                <label>Iris edge border size :</label>
+                <input oninput='JEEPUPILAPI.update_controls()' type='range' id='jeePupilControlIrisEdgeSize'  min='0.5' max='4.5' value='3.0' step='0.5'/><br/>
+
+                <label>Iris border thresholding :</label>
+                <input oninput='JEEPUPILAPI.update_controls()' type='range' id='jeePupilControlIrisThres'  min='0.1' max='0.9' value='0.2' step='0.1'/><br/>
+
+                <label>Iris roundness (a/b) :</label>
+                <input oninput='JEEPUPILAPI.update_controls()' type='range' id='jeePupilControlIrisRoundness'       min='0.8' max='1.2' value='1.04' step='0.02'/><br/>
+
+                <label>Pupil detect sensitivity :</label>
+                <input oninput='JEEPUPILAPI.update_controls()' type='range'        id='jeePupilControlPupilSensitivity'    min='0' max='0.3' value='0.15' step='0.002'/>
+            </div>
+        </div>
+
+        <div class='tabContent' style='display: none' id='tabContent-experiment'>
+          <div id="progress-bar"></div>
+          <div id="jspsych-target"><div id="load-text" class="very-large">Loading experiment</div></div>
+        </div>
+
+        <div class='jeeliz tabContent' style='display: none' id='tabContent-results'>
+            <div class='results'>
+                <div id='results-noResults'>There are no results yet. Please run and complete an experiment first.</div>
+                <div id='results-plot'></div>
+                <div id='results-caption'>
+                    Horizontal axis &rarr; time in seconds, Vertical axis &rarr; &lt;pupilRadius&gt;/&lt;irisRadius&gt;
+                </div>
+            </div>
+        </div>
+
+        <div class='jeeliz tabContent' style='display: none' id='tabContent-resultsAvg'>
+            <div class='results'>
+                <div id='resultsAvg-noResults'>There are no results yet. Please run and complete an experiment first.</div>
+                <div id='resultsAvg-plot'></div>
+                <div id='resultsAvg-caption'>
+                </div>
+            </div>
+        </div>
+
+        <div class='jeeliz tabContent' style='display: none' id='tabContent-resultsAvgText'>
+            <div class='results' style="height: 700px; overflow: scroll; word-wrap:break-word; padding:100px;">
+                <div id='resultsAvgText-noResults' style="text-align: left;">There are no results yet. Please run and complete an experiment first.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class='jeeliz tabContent' style='display: none' id='tabContent-resultsRaw'>
+            <div class='results' style="height: 700px; overflow: scroll; word-wrap:break-word; padding:100px;">
+                <div id='resultsRaw-noResults' style="text-align: left;">There are no results yet. Please run and complete an experiment first.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class='jeeliz tabContent' style='display: none' id='tabContent-about'>
+            <div class='about'>
+            <p>
+            The experimental setup is inspired by the paper of Edwin S. Dalmaijer from the Department of Experimental Psychology, University of Oxford, Oxford, United Kingdom published in November 2014. The author compares a low-cost eye tracker (the EyeTribe eye tracker) with an expensive one. The pupillometry is tested in the section 3.3. <a href='../../doc/eyetribeReview.pdf'>You can find this publication here</a>.
+            </p>
+
+            <p>
+            We use <a href='https://jeeliz.com'>Jeeliz</a> pupillometry to measure the radius of the pupil. The github repository of the project can be found <a href='https://github.com/jeeliz/jeelizPupillometry'>here</a>.
+            </p>
+            </div>
+        </div>
+
+    </body>
+</html>

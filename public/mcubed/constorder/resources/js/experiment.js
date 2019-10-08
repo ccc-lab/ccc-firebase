@@ -72,7 +72,6 @@
   		},
 
   		start: function(){
-        console.log("Jeeliz.start called");
 
   			if (_isRunning){
   				console.log('WARNING in Experiment.js - start() : the experiment is running. Stop it before running this method.');
@@ -119,29 +118,10 @@
         display_element.insertAdjacentHTML('beforeend','<a id="jspsych-download-as-text-link" style="display:none;" download="pupil-raw_subj-'+ id +'_list-' + list + '.json" href="'+blobURL+'">click to download</a>');
         document.getElementById('jspsych-download-as-text-link').click();
 
-        var avgs={};
-    		['SVO', 'SOV', 'OSV', 'OVS', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
-    			groupedValues[groupLabel]=groupedValues[groupLabel].map(function(sample){
-    				ExperimentRecorder.filter_hampel(sample, 0.5, 2);
-    				var sampleNormalized=ExperimentRecorder.normalize_byFirstValue(sample);
-    				return ExperimentRecorder.resample(sampleNormalized, _settings.delay, _settings.resamplePeriod);
-    			});
-
-    			var averageValues=ExperimentRecorder.average_resampleds(groupedValues[groupLabel]);
-    			avgs[groupLabel]=averageValues;
-    		});
-    		//plot average :
-    		ExperimentRecorder.plot_averages(avgs);
-
     		//Some CSS & UI stuffs :
     		setCSSdisplay('results-noResults', 'none');
     		setCSSdisplay('results-caption', 'block');
     		setCSSdisplay('results-plot', 'inline-block');
-
-    		setCSSdisplay('resultsAvg-noResults', 'none');
-    		setCSSdisplay('resultsAvg-caption', 'block');
-    		setCSSdisplay('resultsAvg-plot', 'inline-block');
-
     	}
 
   	} //end that
@@ -161,11 +141,11 @@
 
     var exptParams = {
       shift: parseInt(params.id, 10),
-      test: (params.id == "test" ? true : false)
+      test: (params.id == "test" ? true : false),
+      conditions: params.experimental_conditions.concat(params.subexperiment_conditions)
     }
 
-    exptParams.left = "very<br/>natural";
-    exptParams.right = "very<br/>unnatural";
+    exptParams.conditions.push(params.filler_tag)
     exptParams.list = (exptParams.shift - 1) % 6
 
     /** The current subject.
@@ -195,58 +175,31 @@
     this.addPropertiesTojsPsych = function () {
       jsPsych.data.addProperties({
         subject: subject.id,
-        list: exptParams.list
+        list: exptParams.list,
+        language: params.language
       });
     }
 
-    /** Initialize and append the default preamble to the timeline.
-      * This includes a generic intro page, consent form, and demographic questionnaire.
-      * Values for some of these are altered via the JSON file.
-    */
-    var initPreamble = function() {
-      var preamble = params.preamble;
-
-      // NOTE: Functions cannot be included in JSON files - must be appended here instead.
-
-      /* This function checks whether or not the subject consented to the experiment.
-       * jsPsych uses the return value (true/false) to determine whether or not to
-       * display the conditional trial. True -> display the trial. False -> continue
-       * the experiment.
-      */
-      preamble.consent_check.conditional_function = function() {
-        var data = jsPsych.data.getLastTrialData().values()[0];
-        return !data.consented;
-      }
-
-      // Check that the participant entered a valid age.
-      preamble.demographics_check.conditional_function = function() {
-        var data = jsPsych.data.getLastTrialData().values()[0];
-        if(parseInt(data.age) < 18) return true;
-        return false;
-      }
-
-      // Add the preamble to the timeline
-      timeline = timeline.concat([preamble.intro, preamble.consent, preamble.consent_check, preamble.demographics, preamble.demographics_check, preamble.post_demographics]);
-    }
-
     /** This function handles setting up the experimental trials.
-      * Here, it just pushes two sample trials onto the timeline.
-      * In a more complex experiment, you might use it to call various helper functions.
-    */
+        Trials consitist of
+          1. A fixation point
+          2. An audio stimulus
+          3. A likert scale
+    **/
 
     var makeTrial = function(stimulus, i) {
 
       var audio;
-      console.log(stimulus);
 
-      if(stimulus.condition == 'FILLER') {
-        audio = 'resources/sound/fillerfillers/' + stimulus.audio + '.wav';
+      if(stimulus.condition == params.filler_tag) {
+        audio = params.file_locations.fillers + stimulus.audio + '.wav';
       } else if(_.contains(params.experimental_conditions, stimulus.condition)) {
-        audio = 'resources/sound/' + stimulus.audio + '.wav';
+        audio = params.file_locations.critical + stimulus.audio + '.wav';
       } else {
-        audio = 'resources/sound/fillers/' + stimulus.audio + '.wav';
+        audio = params.file_locations.subexperiment + stimulus.audio + '.wav';
       }
 
+      console.log(audio)
       return ({
         "type": "html-keyboard-response",
         "timeline": [
@@ -277,8 +230,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "stimulus": '<p class="text-center huge">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "prompt": '<br/><br/><br/><p class="text-center huge"><table class="huge" style="text-align: center;"><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>' + exptParams.left + '</td><td></td><td></td><td>neither natural nor unnatural</td><td></td><td></td><td>' + exptParams.right + '</td></table></p>',
+            "stimulus": params.trial_instructions.stimulus,
+            "prompt": params.trial_instructions.prompt,
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
@@ -298,15 +251,13 @@
     }
     var initTrials = function() {
 
-      console.log((exptParams.shift - 1) % 6);
-
       var list = params.item_list[(exptParams.shift - 1) % 6];
       var stimuli = _.zip(list.id, list.audio, list.condition);
 
       timeline.push({
         "stimulus": "",
         "type": "html-keyboard-response",
-        "prompt": "<div class='experiment-point'><br/><br/>Look at<br/>this circle</div>",
+        "prompt": params.instructions.circle_text,
         "trial_duration": 2000,
         "choices": jsPsych.NO_KEYS
       });
@@ -319,7 +270,7 @@
     }
 
     var initMockTrials = function() {
-      var conditions = ['SVO', 'SOV', 'OSV', 'OVS', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'];
+      var conditions = exptParams.conditions;
       _.each(conditions, function(condition) {
         timeline.push(makeMockTrial(condition));
       })
@@ -356,8 +307,8 @@
               ExperimentRecorder.addEvent("RESP");
             },
             "type": "html-keyboard-response",
-            "stimulus": '<p class="text-center huge">Please rate the naturalness of the sentence you just heard. Input your response using the keyboard.</p>',
-            "prompt": '<br/><br/><br/><p class="text-center huge"><table class="huge" style="text-align: center;"><tr><td>1<br/><br/><br/><br/>' + exptParams.left + '</td><td>2<br/><br/><br/></td><td>3<br/><br/><br/></td><td>4</br>(neither natural</br>nor unnatural)<br/></td><td>5<br/><br/><br/></td><td>6<br/><br/><br/></td><td>7<br/><br/><br/><br/>' + exptParams.right + '</td></table></p>',
+            "stimulus": params.trial_instructions.stimulus,
+            "prompt": params.trial_instructions.prompt,
             "response_ends_trial": true,
             choices: ["1", "2", "3", "4", "5", "6", "7"],
             on_finish: function(){
@@ -377,20 +328,13 @@
 
       var start = {
         "type": "instructions",
-        "timeline": [{
-          "show_clickable_nav": true,
-          "allow_backward": false,
-          "pages": ['<p class="huge">In this experiment, you will listen to a series of sentences.</p><p class="huge">After each sentence, you will be asked to rate how natural the sentence sounds.</p><p class="huge">A natural sentence is one that you can imagine saying yourself or hearing from someone you know; an unnatural sentence is one that sounds odd—you wouldn\'t quite say it that way, or it is not grammatical.</p>'],
-        },
-        {
-          "key_forward": " ",
-          "show_clickable_nav": false,
-          "allow_backward": false,
-          "pages": ['<p class="huge">This experiment will take about 20 minutes to complete.</p><p class="huge">Press SPACE when you are ready to begin.</p>'],
-          on_finish: function(start) {
+        "key_forward": " ",
+        "show_clickable_nav": false,
+        "allow_backward": false,
+        "pages": params.instructions.start,
+        "on_finish": function(start) {
             Jeeliz.toggle();
-          }
-        }]
+        }
       };
 
       timeline.push(start);
@@ -402,29 +346,28 @@
 
     var end = {
         "type": "instructions",
-        "key_forward": "S",
-        "show_clickable_nav": false,
-        "allow_backward": false,
-        "pages": ["<p>You have completed the experiment! Please leave this window open and notify the experimenter.</p><p>EXPERIMENTER: Press 'S' to save the participant's PUPIL data. On the next screen, you will be asked to press 'S' again to save the BEHAVIORAL data."],
-        on_finish: function() {
-          console.log("Calling complete() method " + exptParams.list);
-          Jeeliz.complete(subject.id, exptParams.list);
+        "timeline": [
+        {
+          "key_forward": "S",
+          "show_clickable_nav": false,
+          "allow_backward": false,
+          "pages": params.instructions.savePupil,
+          on_finish: function() {
+            Jeeliz.complete(subject.id, exptParams.list);
+          }
+        }, {
+          "key_forward": "S",
+          "show_clickable_nav": false,
+          "allow_backward": false,
+          "pages": params.instructions.saveBehavioral,
+          on_finish: function() {
+            jsPsych.data.get().localSave('csv', 'behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
+          }
         }
-    };
-
-    var end2 = {
-      "type": "instructions",
-      "key_forward": "S",
-      "show_clickable_nav": false,
-      "allow_backward": false,
-      "pages": ["<p>EXPERIMENTER: Now press 'S' again to save the participant's BEHAVIORAL data."],
-      on_finish: function() {
-        jsPsych.data.get().localSave('csv', 'behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
-      }
+      ]
     }
 
     timeline.push(end);
-    timeline.push(end2);
-
   }
+
 };
