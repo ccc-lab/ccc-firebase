@@ -5,9 +5,9 @@
   	//experiment settings :
   	var _settings={
   		faceDetectedThreshold: 0.5, //between 0 (easy detection) and 1 (hard detection)
-  		nIterations: 25,//25, //number of iterations black -> white
-  		delay: 2000, //delay between 2 luminosity changes in ms
-  		resamplePeriod: 20 //used for measures time resampling (we need to resample the time to average values). In ms
+  		nIterations: 100,//25, //number of iterations black -> white
+  		delay: 1000, //delay between 2 luminosity changes in ms
+  		resamplePeriod: 10 //used for measures time resampling (we need to resample the time to average values). In ms
   	};
 
   	//private vars :
@@ -92,7 +92,7 @@
   			ExperimentRecorder.end();
   		},
 
-      complete: function(){ //experience is complete (not aborted or canceled)
+      complete: function(id, list){ //experience is complete (not aborted or canceled)
     		console.log('INFO in Experiment.js : experiment is complete :)');
 
     		that.stop();
@@ -103,6 +103,21 @@
 
         var gd = document.getElementById("resultsRaw-noResults")
         gd.innerHTML = "<pre>" + JSON.stringify(groupedValues, null, 4) + "</pre>";
+
+        var blobToSave = new Blob([JSON.stringify(groupedValues, null, 4)], {
+          type: 'text/plain'
+        });
+        var blobURL = "";
+        if (typeof window.webkitURL !== 'undefined') {
+          blobURL = window.webkitURL.createObjectURL(blobToSave);
+        } else {
+          blobURL = window.URL.createObjectURL(blobToSave);
+        }
+
+        var display_element = jsPsych.getDisplayElement();
+
+        display_element.insertAdjacentHTML('beforeend','<a id="jspsych-download-as-text-link" style="display:none;" download="pupil-raw_subj-'+ id +'_list-' + list + '.json" href="'+blobURL+'">click to download</a>');
+        document.getElementById('jspsych-download-as-text-link').click();
 
         var avgs={};
     		['SVO', 'SOV', 'OSV', 'OVS', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf'].forEach(function(groupLabel){
@@ -127,8 +142,6 @@
     		setCSSdisplay('resultsAvg-caption', 'block');
     		setCSSdisplay('resultsAvg-plot', 'inline-block');
 
-        var gd = document.getElementById("resultsAvgText-noResults")
-        gd.innerHTML = "<pre>" + JSON.stringify(avgs, null, 4) + "</pre>";
     	}
 
   	} //end that
@@ -153,6 +166,7 @@
 
     exptParams.left = "very<br/>natural";
     exptParams.right = "very<br/>unnatural";
+    exptParams.list = (exptParams.shift - 1) % 6
 
     /** The current subject.
      * @type {object}
@@ -181,7 +195,7 @@
     this.addPropertiesTojsPsych = function () {
       jsPsych.data.addProperties({
         subject: subject.id,
-        list: (exptParams.shift - 1) % 6
+        list: exptParams.list
       });
     }
 
@@ -391,17 +405,26 @@
         "key_forward": "S",
         "show_clickable_nav": false,
         "allow_backward": false,
-        "pages": ["<p>You have completed the experiment! Please leave this window open and notify the experimenter.</p><p>EXPERIMENTER: Press 'S' to save the participant's data."],
-        on_start: function(end) {
-          console.log("Calling complete() method");
-          Jeeliz.complete();
-        },
+        "pages": ["<p>You have completed the experiment! Please leave this window open and notify the experimenter.</p><p>EXPERIMENTER: Press 'S' to save the participant's PUPIL data. On the next screen, you will be asked to press 'S' again to save the BEHAVIORAL data."],
         on_finish: function() {
-            jsPsych.data.get().localSave('csv', subject.id + '_raw.csv');
+          console.log("Calling complete() method " + exptParams.list);
+          Jeeliz.complete(subject.id, exptParams.list);
         }
     };
 
+    var end2 = {
+      "type": "instructions",
+      "key_forward": "S",
+      "show_clickable_nav": false,
+      "allow_backward": false,
+      "pages": ["<p>EXPERIMENTER: Now press 'S' again to save the participant's BEHAVIORAL data."],
+      on_finish: function() {
+        jsPsych.data.get().localSave('csv', 'behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
+      }
+    }
+
     timeline.push(end);
+    timeline.push(end2);
 
   }
 };
