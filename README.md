@@ -45,9 +45,9 @@ If you need to update the experiment:
 
 3. Open a new terminal window (ctrl, alt, t). To get more features that adjust the camera, enter the following in the terminal:
 
-     `v4l2ucp`
+     `v4l2ucp /dev/video2`
 
-If two error messages pop up, ignore them (i.e press ok) and proceed.
+If two error messages pop up, ignore them (i.e press ok) and proceed. If it doesn't seem like v4l2ucp is affecting the camera, try a different `video`, e.g. `video0`, `video1`.
 
 4. Calibrate the subject
 
