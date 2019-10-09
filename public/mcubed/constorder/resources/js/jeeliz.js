@@ -88,14 +88,14 @@ var Jeeliz=(function(){
       ExperimentRecorder.end();
     },
 
-    complete: function(id, list){ //experience is complete (not aborted or canceled)
+    complete: function(id, params){ //experience is complete (not aborted or canceled)
       console.log('INFO in Experiment.js : experiment is complete :)');
 
       that.stop();
       ExperimentRecorder.plot(); //trace RAW RESULTS
 
       //compute and trace AVG RESULTS :
-      var groupedValues=ExperimentRecorder.group_byEventLabels(['SVO', 'SOV', 'OVS', 'OSV', 'VSO', 'VOS', 'FILLER', 'ShortBare', 'LongBare', 'ShortD', 'LongD', 'ShortDOf','LongDOf' /*'RESP'*/]);
+      var groupedValues=ExperimentRecorder.group_byEventLabels(params.conditions);
 
       var gd = document.getElementById("resultsRaw-noResults")
       gd.innerHTML = "<pre>" + JSON.stringify(groupedValues, null, 4) + "</pre>";
@@ -112,7 +112,16 @@ var Jeeliz=(function(){
 
       var display_element = jsPsych.getDisplayElement();
 
-      display_element.insertAdjacentHTML('beforeend','<a id="jspsych-download-as-text-link" style="display:none;" download="pupil-raw_subj-'+ id +'_list-' + list + '.json" href="'+blobURL+'">click to download</a>');
+      var date = new Date();
+
+      var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+      var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+      var dateString = date.getFullYear() + '' + month + '' + day + '' + hours + '' + minutes;
+
+      display_element.insertAdjacentHTML('beforeend','<a id="jspsych-download-as-text-link" style="display:none;" download="' + dateString + '_pupil-raw_subj-'+ id +'_list-' + params.list + '.json" href="'+blobURL+'">click to download</a>');
       document.getElementById('jspsych-download-as-text-link').click();
 
       //Some CSS & UI stuffs :

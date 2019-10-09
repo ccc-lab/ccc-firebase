@@ -10,13 +10,10 @@
     var timeline = [];
 
     var exptParams = {
-      shift: parseInt(params.id, 10),
       test: (params.id == "test" ? true : false),
-      conditions: params.experimental_conditions.concat(params.subexperiment_conditions)
+      conditions: params.experimental_conditions.concat(params.subexperiment_conditions).concat(params.filler_conditions),
+      list: params.list
     }
-
-    exptParams.conditions.push(params.filler_tag)
-    exptParams.list = (exptParams.shift - 1) % 6
 
     /** The current subject.
      * @type {object}
@@ -61,7 +58,7 @@
 
       var audio;
 
-      if(stimulus.condition == params.filler_tag) {
+      if(_.contains(params.filler_conditions, stimulus.condition)) {
         audio = params.file_locations.fillers + stimulus.audio + '.wav';
       } else if(_.contains(params.experimental_conditions, stimulus.condition)) {
         audio = params.file_locations.critical + stimulus.audio + '.wav';
@@ -69,7 +66,6 @@
         audio = params.file_locations.subexperiment + stimulus.audio + '.wav';
       }
 
-      console.log(audio)
       return ({
         "type": "html-keyboard-response",
         "timeline": [
@@ -97,7 +93,7 @@
           },
           {
             on_start: function(trial) {
-              ExperimentRecorder.addEvent("RESP");
+              ExperimentRecorder.addEvent("Response");
             },
             "type": "html-keyboard-response",
             "stimulus": params.trial_instructions.stimulus,
@@ -111,6 +107,7 @@
                 key_press_processed: resp,
                 id: stimulus.id,
                 audio: stimulus.audio,
+                experiment: stimulus.experiment,
                 condition: stimulus.condition
               });
             }
@@ -121,8 +118,8 @@
     }
     var initTrials = function() {
 
-      var list = params.item_list[(exptParams.shift - 1) % 6];
-      var stimuli = _.zip(list.id, list.audio, list.condition);
+      var list = params.item_list[exptParams.list-1];
+      var stimuli = _.zip(list.id, list.audio, list.condition, list.experiment);
 
       timeline.push({
         "stimulus": "",
@@ -133,7 +130,7 @@
       });
 
       _.each(stimuli, function(stimulus, i) {
-        var trial = makeTrial(_.object(["id", "audio", "condition"], stimulus), i);
+        var trial = makeTrial(_.object(["id", "audio", "condition", "experiment"], stimulus), i);
         if(trial) { timeline.push(trial); }
       });
 
@@ -155,20 +152,20 @@
               ExperimentRecorder.addEvent(condition);
             },
             "stimulus": "",
-            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
+            "prompt": params.instructions.circle_text,
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS
           },
           {
             "type": "audio-keyboard-response",
             "stimulus": 'resources/sound/beep.wav',
-            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
+            "prompt": params.instructions.circle_text,
             "trial_ends_after_audio": true,
             "choices": jsPsych.NO_KEYS
           },
           {
             "stimulus": "",
-            "prompt": "<div class='experiment-point'>Look at<br/>this circle</div>",
+            "prompt": params.instructions.circle_text,
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS
           },
@@ -223,7 +220,7 @@
           "allow_backward": false,
           "pages": params.instructions.savePupil,
           on_finish: function() {
-            Jeeliz.complete(subject.id, exptParams.list);
+            Jeeliz.complete(subject.id, exptParams);
           }
         }, {
           "key_forward": "S",
@@ -231,7 +228,15 @@
           "allow_backward": false,
           "pages": params.instructions.saveBehavioral,
           on_finish: function() {
-            jsPsych.data.get().localSave('csv', 'behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
+            var date = new Date();
+
+            var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+
+            var dateString = date.getFullYear() + '' + month + '' + day + '' + hours + '' + minutes;
+            jsPsych.data.get().localSave('csv', dateString + '_behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
           }
         }
       ]
