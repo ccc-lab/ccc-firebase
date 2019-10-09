@@ -87,9 +87,9 @@
       }
     ],
     "file_locations": {
-      "critical": "resources/sound/sp/",
-      "subexperiment": "resources/sound/sp/",
-      "fillers": "resources/sound/sp/"
+      "critical": "resources/sound/spanish/",
+      "subexperiment": "resources/sound/spanish/",
+      "fillers": "resources/sound/spanish/"
     },
     "trial_instructions": {
       "stimulus": "<p class=\"text-center huge\">Califica la naturalidad de la oración que acabas de escuchar. Marca tu respuesta usando el teclado.</p>",
