@@ -1,7 +1,7 @@
 {
     "subexperiment_conditions": ["BadCliticDi", "NoCliticDi", "BadCliticMono", "NoCliticMono", "CliticMono", "CliticDi"],
     "experimental_conditions": ["SOV", "SVO", "OSV", "OVS", "VSO", "VOS"],
-    "filler_tag": "FILLER",
+    "filler_conditions": ["GenderMismatch", "V_CLITIC_N_N", "Subjunctive", "AgreeError", "NN_ando", "BufferGood", "BufferMed", "BufferBad"],
     "item_list": [
       {
         "condition": ["BufferGood", "BufferBad", "BufferMed", "BufferBad", "BufferGood", "BufferMed", "SVO", "NoCliticDi", "OVS", "NN_ando", "BadCliticMono", "SOV", "GenderMismatch", "NN_ando", "NoCliticMono", "Subjunctive", "NoCliticDi", "CliticMono", "VOS", "CliticDi", "Subjunctive", "VSO", "V_CLITIC_N_N", "OVS", "CliticDi", "VSO", "NN_ando", "V_CLITIC_N_N", "SOV", "CliticMono", "BadCliticMono", "SOV", "Subjunctive", "NoCliticDi", "V_CLITIC_N_N", "AgreeError", "VSO", "NoCliticMono", "BadCliticDi", "SOV", "V_CLITIC_N_N", "VOS", "SVO", "AgreeError", "VOS", "NoCliticDi", "Subjunctive", "CliticMono", "OVS", "Subjunctive", "VSO", "GenderMismatch", "OSV", "BadCliticDi", "AgreeError", "SVO", "NoCliticMono", "VSO", "NN_ando", "OVS", "NoCliticMono", "V_CLITIC_N_N", "OSV", "GenderMismatch", "BadCliticMono", "OVS", "AgreeError", "CliticDi", "OSV", "NN_ando", "AgreeError", "CliticMono", "SVO", "NN_ando", "GenderMismatch", "SOV", "AgreeError", "BadCliticMono", "SVO", "GenderMismatch", "OSV", "BadCliticDi", "VOS", "V_CLITIC_N_N", "CliticDi", "GenderMismatch", "BadCliticDi", "OSV", "Subjunctive", "VOS"],
@@ -36,8 +36,9 @@
     },
     "instructions": {
       "start": ["<p class=\"huge\">En esta investigación nos interesa saber cuáles son tus impresiones con respecto a diferentes oraciones en español. En este experimento, vas a escuchar varias oraciones y luego se te pedirá que indiques qué te parecen.</p><p class=\"huge\">(Presiona la barra espaciadora para continuar.)</p>", "<p class=\"huge\">No podrás escuchar las oraciones dos veces, así que haz todo lo posible por prestar atención. Después de cada oración verás una escala para que, como hablante de español, puedas indicar cómo te suena cada oración. La escala va del 1 (muy mal), al 7 (muy bien).</p><p class=\"huge\">(Presiona la barra espaciadora para continuar.)</p>", "<p class=\"huge\">Algunos detalles que es importante que tengas en cuenta:</p><ol class=\"huge\"><li>Ofrece tu primera reacción. No intentes analizar la oración.</li><li>No hay respuestas correctas. Queremos saber cómo te suena cada oración.</li><li>Las oraciones son individuales y no están relacionadas entre ellas, así que califica cada una de ellas por sí solas.</li><li>Después de calificar las oraciones, se te harán algunas breves preguntas demográficas.</li></ol><p class=\"huge\">(Presiona la barra espaciadora para continuar.)</p>", "<p class=\"huge\">Este proyecto ha sido revisado y otorgado el estado \"Exento\" por el IRB de la Universidad de Michigan (HUM00142209). Tu participación en este estudio es voluntaria y puedes detenerte en cualquier momento.</p><p class=\"huge\">Presiona la barra espaciadora para acceder al estudio y comenzar.</p>"],
-      "circle_text": "<div class=\"experiment-point\"><br/><br/><br/><br/>Por favor<br/>mira este<br/>círculo</div>",
-      "savePupil": ["<p class=\"huge\">¡Has completado el experimento! Deja esta ventana abierta y avisa al experimentador.</p><p class=\"huge\">EXPERIMENTER: Press 'S' to save the participant's PUPIL data. On the next screen, you will be asked to press 'S' again to save the BEHAVIORAL data."],
-      "saveBehavioral": ["<p class=\"huge\">EXPERIMENTER: Now press 'S' again to save the participant's BEHAVIORAL data."]
+      "circle_text": "<div class=\"experiment-point\"><br/><br/>Por favor<br/>mira este<br/>círculo</div>",
+      "savePupil": ["<p class=\"huge\">¡Has completado el experimento! Deja esta ventana abierta y avisa al experimentador.</p><p class=\"huge\">EXPERIMENTADOR: Presiona \"S\"; para guardar los datos de la PUPILA de este
+participante. En la siguiente pantalla, se te pedirá que presiones \"S\"; nuevamente para guardar los datos de COMPORTAMIENTO."],
+      "saveBehavioral": ["<p class=\"huge\">EXPERIMENTADOR: Ahora presiona \"S\"; nuevamente para guardar los datos de COMPORTAMIENTO de este participante."]
     }
 }
