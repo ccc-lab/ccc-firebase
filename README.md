@@ -9,9 +9,9 @@ Stimuli for the experiments are hosted on Google Drive. Please contact arkram {a
 
 Once stimuli are downloaded, serve the experiment by running
 
-`cd /home/ccc-lab/Desktop/neworder/ccc-firebase-master`
+`cd /home/ccc-lab/Desktop/MCubed/ccc-firebase-master`
 
-`firebase serve`
+`superstatic` (to serve offline; `firebase serve` to serve online)
 
 Then open Google Chrome and navigate to
 
@@ -43,7 +43,7 @@ If you need to update the experiment:
 
 1. Open terminal and enter the following text:
 
-     `cd /home/ccc-lab/Desktop/neworder/ccc-firebase-master`
+     `cd /home/ccc-lab/Desktop/MCubed/ccc-firebase`
 
 2. Next, enter the following to pull from the Git repo:
 
@@ -53,9 +53,9 @@ If you need to update the experiment:
 
 1. Open the terminal and enter the following text:
 
-     `cd /home/ccc-lab/Desktop/MCubed/ccc-firebase-master`
+     `cd /home/ccc-lab/Desktop/neworder/ccc-firebase-master`
 
-     `firebase serve`
+     `superstatic` (to serve offline; `firebase serve` to serve online)
 
 2. Launch Google Chrome and paste into the address bar the following URL:
 
