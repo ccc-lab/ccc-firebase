@@ -15,7 +15,9 @@ Once stimuli are downloaded, serve the experiment by running
 
 Then open Google Chrome and navigate to
 
-http://localhost:5000/mcubed/constorder/launcher.html?lang={language} (sp or en)
+  Firebase: http://localhost:5000/mcubed/constorder/launcher.html?lang={language} (sp or en)
+
+  Superstatic: http://localhost:3474/mcubed/constorder/launcher.html?lang={language} (sp or en)
 
 Enter a subject number and list number (e.g. 1, 1) and click "Continue", then "Begin Experiment".
 
@@ -59,7 +61,9 @@ If you need to update the experiment:
 
 2. Launch Google Chrome and paste into the address bar the following URL:
 
-  http://localhost:5000/mcubed/constorder/launcher.html?lang={language}
+  Firebase: http://localhost:5000/mcubed/constorder/launcher.html?lang={language} (sp or en)
+
+  Superstatic: http://localhost:3474/mcubed/constorder/launcher.html?lang={language} (sp or en)
 
   Currently, the flags `en` and `sp` are supported.
 
