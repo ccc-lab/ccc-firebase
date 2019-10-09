@@ -3,7 +3,25 @@ Firebase-hosted online experiments for the Contact, Cognition and Change Lab.
 
 ## Stimuli
 
-Stimuli for the experiments are hosted on Google Drive. Please contact arkram {at} umich {dot} edu or savithry {at} umich {dot} edu for access. Once downloaded, stimuli should be placed in the `/resources/sound` (or `/resources/images`) folder of the experiment they correspond to.
+Stimuli for the experiments are hosted on Google Drive. Please contact arkram {at} umich {dot} edu or savithry {at} umich {dot} edu for access. Once downloaded, stimuli should be placed in the `/resources/sound/{language}` (or `/resources/images`) folder of the experiment they correspond to.
+
+## Testing
+
+Once stimuli are downloaded, serve the experiment by running
+
+`cd /home/ccc-lab/Desktop/neworder/ccc-firebase-master`
+
+`firebase serve`
+
+Then open Google Chrome and navigate to
+
+http://localhost:5000/mcubed/constorder/launcher.html?lang={language} (sp or en)
+
+Enter a subject number and list number (e.g. 1, 1) and click "Continue", then "Begin Experiment".
+
+When testing the stimuli, the pupillometry display can be ignored. Advance through the experiment and ensure that all audio files play and that all conditions are recorded in the resulting output from both jsPsych and Jeeliz.
+
+If the experiment does not run, open the browser console. Most likely, an audio file could not be located; the file name will appear in the console as an error (404). Double-check that audio names are consistent with the names in the appropriate `.data.json` file in `/resources/data/`.
 
 ## Instructions for running experiments on the lab laptop (Ubuntu)
 
@@ -35,13 +53,15 @@ If you need to update the experiment:
 
 1. Open the terminal and enter the following text:
 
-     `cd /home/ccc-lab/Desktop/neworder/ccc-firebase-master`
+     `cd /home/ccc-lab/Desktop/MCubed/ccc-firebase-master`
 
      `firebase serve`
 
 2. Launch Google Chrome and paste into the address bar the following URL:
 
-  http://localhost:5000/mcubed/engco/launcher.html
+  http://localhost:5000/mcubed/constorder/launcher.html?lang={language}
+
+  Currently, the flags `en` and `sp` are supported.
 
 3. Open a new terminal window (ctrl, alt, t). To get more features that adjust the camera, enter the following in the terminal:
 
