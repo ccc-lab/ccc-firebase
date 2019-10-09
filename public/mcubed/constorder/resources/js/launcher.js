@@ -28,7 +28,7 @@ function submit() {
       $('#code-confirm').html('You have entered the following ID: <strong>' + code + '</strong>');
     } else {
       $('#link1').attr('href', 'experiment.html?lang=sp&id=' + code);
-      $('#code-confirm').html('You have entered the following ID: <strong>' + code + '</strong>');
+      $('#code-confirm').html('Acabas de registrar la siguiente identificación (ID): <strong>' + code + '</strong>');
     }
     $('#studylinks').show();
   }
@@ -38,7 +38,7 @@ $('document').ready(function() {
 
   var params = jsPsych.data.urlVariables();
 
-  if(params.language == 'en') {
+  if(params.lang == 'en') {
     launcher_title = "Experiment Launcher";
 
     id_text = "Please enter the subject's ID number:";
@@ -50,15 +50,15 @@ $('document').ready(function() {
     footer_text = "This project is supported by the University of Michigan MCubed Initiative."
   }
   else {
-    launcher_title = "Comienza Experimento"
+    launcher_title = "Página de Inicio del Experimento"
 
     id_text = "Por favor escribe el código de identificación del participante (ID):";
     continue_text = "Continúa";
 
-    conf_text = "Please double-check that this ID is correct before proceeding.";
-    begin_text = "Begin Experiment";
+    conf_text = "Antes de continuar, por favor verifica que esta ID sea correcta.";
+    begin_text = "Comienza el Experimento";
 
-    footer_text = "This project is supported by the University of Michigan MCubed Initiative."
+    footer_text = "Este es un proyecto financiado por la iniciativa MCubed de la Universidad de Michigan."
   }
 
   $('#launcher-title').html('<h2>' + launcher_title + '</h2>');
