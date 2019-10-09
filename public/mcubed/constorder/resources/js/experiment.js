@@ -59,11 +59,11 @@
       var audio;
 
       if(_.contains(params.filler_conditions, stimulus.condition)) {
-        audio = params.file_locations.fillers + stimulus.audio + '.wav';
+        audio = params.file_locations.fillers + stimulus.audio + '.WAV';
       } else if(_.contains(params.experimental_conditions, stimulus.condition)) {
-        audio = params.file_locations.critical + stimulus.audio + '.wav';
+        audio = params.file_locations.critical + stimulus.audio + '.WAV';
       } else {
-        audio = params.file_locations.subexperiment + stimulus.audio + '.wav';
+        audio = params.file_locations.subexperiment + stimulus.audio + '.WAV';
       }
 
       return ({
