@@ -49,7 +49,6 @@ function initializeExperiment(experiment) {
 
   jsPsych.init({
     timeline: experiment.getTimeline(),
-    show_progress_bar: true,
     display_element: 'jspsych-target'
   });
 
