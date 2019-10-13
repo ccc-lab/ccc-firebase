@@ -18,10 +18,10 @@ function submit() {
       'class': 'form-error text-center'
     }));
   }
-  else if(((/\D/.test(code)) && code != "test") || ((/\D/.test(list)) && list != "test")) {
+  else if((/\D/.test(list)) && list != "test") {
     $('#code-form').append($('<p>', {
       'class': 'form-error text-center',
-      'html': 'ID and list must be numbers.'
+      'html': 'List must be a number.'
     }));
   }
   else {
