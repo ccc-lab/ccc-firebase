@@ -76,20 +76,50 @@
             "stimulus": "",
             "prompt": "<div class='experiment-point'></div>",
             "trial_duration": 1000,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: stimulus.id,
+                audio: stimulus.audio,
+                experiment: stimulus.experiment,
+                condition: stimulus.condition,
+                trial_type_exp: 'pre-audio'
+              });
+            }
           },
           {
             "type": "audio-keyboard-response",
             "stimulus": audio,
             "prompt": "<div class='experiment-point'></div>",
             "trial_ends_after_audio": true,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: stimulus.id,
+                audio: stimulus.audio,
+                experiment: stimulus.experiment,
+                condition: stimulus.condition,
+                trial_type_exp: 'audio'
+              });
+            }
           },
           {
             "stimulus": "",
             "prompt": "<div class='experiment-point'></div>",
             "trial_duration": 1000,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: stimulus.id,
+                audio: stimulus.audio,
+                experiment: stimulus.experiment,
+                condition: stimulus.condition,
+                trial_type_exp: 'post-audio'
+              });
+            }
           },
           {
             on_start: function(trial) {
@@ -104,11 +134,13 @@
               var data = jsPsych.data.getLastTrialData().values()[0];
               var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
               jsPsych.data.get().addToLast({
+                trial_num: i,
                 key_press_processed: resp,
                 id: stimulus.id,
                 audio: stimulus.audio,
                 experiment: stimulus.experiment,
-                condition: stimulus.condition
+                condition: stimulus.condition,
+                trial_type_exp: 'response'
               });
             }
           }
@@ -138,12 +170,12 @@
 
     var initMockTrials = function() {
       var conditions = exptParams.conditions;
-      _.each(conditions, function(condition) {
-        timeline.push(makeMockTrial(condition));
+      _.each(conditions, function(condition, i) {
+        timeline.push(makeMockTrial(condition, i));
       })
     }
 
-    var makeMockTrial = function(condition) {
+    var makeMockTrial = function(condition, i) {
       return ({
         "type": "html-keyboard-response",
         "timeline": [
@@ -154,20 +186,50 @@
             "stimulus": "",
             "prompt": params.instructions.circle_text,
             "trial_duration": 500,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: 'NA',
+                audio: 'beep',
+                experiment: 'NA',
+                condition: 'NA',
+                trial_type_exp: 'pre-audio'
+              });
+            }
           },
           {
             "type": "audio-keyboard-response",
             "stimulus": 'resources/sound/beep.wav',
             "prompt": params.instructions.circle_text,
             "trial_ends_after_audio": true,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: 'NA',
+                audio: 'beep',
+                experiment: 'NA',
+                condition: 'NA',
+                trial_type_exp: 'audio'
+              });
+            }
           },
           {
             "stimulus": "",
             "prompt": params.instructions.circle_text,
             "trial_duration": 500,
-            "choices": jsPsych.NO_KEYS
+            "choices": jsPsych.NO_KEYS,
+            on_finish: function(){
+              jsPsych.data.get().addToLast({
+                trial_num: i,
+                id: 'NA',
+                audio: 'beep',
+                experiment: 'NA',
+                condition: 'NA',
+                trial_type_exp: 'post-audio'
+              });
+            }
           },
           {
             on_start: function(trial) {
@@ -182,8 +244,12 @@
               var data = jsPsych.data.getLastTrialData().values()[0];
               var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
               jsPsych.data.get().addToLast({
-                key_press_processed: resp,
-                condition: condition
+                trial_num: i,
+                id: 'NA',
+                audio: 'beep',
+                experiment: 'NA',
+                condition: 'NA',
+                trial_type_exp: 'response'
               });
             }
           }
