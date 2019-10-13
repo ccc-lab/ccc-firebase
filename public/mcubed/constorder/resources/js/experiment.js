@@ -181,7 +181,10 @@
             on_finish: function(){
               var data = jsPsych.data.getLastTrialData().values()[0];
               var resp = jsPsych.pluginAPI.convertKeyCodeToKeyCharacter(data.key_press);
-              jsPsych.data.get().addToLast({key_press_processed: resp});
+              jsPsych.data.get().addToLast({
+                key_press_processed: resp,
+                condition: condition
+              });
             }
           }
         ]

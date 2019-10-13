@@ -94,6 +94,8 @@ var Jeeliz=(function(){
       that.stop();
       ExperimentRecorder.plot(); //trace RAW RESULTS
 
+      params.conditions.push('RESP')
+
       //compute and trace AVG RESULTS :
       var groupedValues=ExperimentRecorder.group_byEventLabels(params.conditions);
 
