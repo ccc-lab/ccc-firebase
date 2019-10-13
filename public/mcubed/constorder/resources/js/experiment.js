@@ -10,7 +10,7 @@
     var timeline = [];
 
     var exptParams = {
-      test: (params.id == "test" ? true : false),
+      test: (params.list == "test" ? true : false),
       conditions: params.experimental_conditions.concat(params.subexperiment_conditions).concat(params.filler_conditions),
       list: params.list
     }
