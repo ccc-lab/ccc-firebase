@@ -9,7 +9,7 @@ Stimuli for the experiments are hosted on Google Drive. Please contact arkram {a
 
 Once stimuli are downloaded, serve the experiment by running
 
-`cd /home/ccc-lab/Desktop/MCubed/ccc-firebase-master`
+`cd /home/ccc-lab/Desktop/MCubed/ccc-firebase`
 
 `superstatic` (to serve offline; `firebase serve` to serve online)
 
