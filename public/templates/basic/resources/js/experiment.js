@@ -64,6 +64,7 @@ function Experiment(params, firebaseStorage) {
 
   }
 
+
   /******************
    * Getter functions
    ******************/
@@ -172,7 +173,7 @@ function Experiment(params, firebaseStorage) {
   var initPostExperiment = function() {
     var thankYou = {
         on_start: function() {
-          saveDataToStorage(jsPsych.data.csv(), data.storageLocation)
+          saveDataToStorage(jsPsych.data.get().csv(), data.storageLocation)
         },
         type: "html-keyboard-response",
         stimulus: "<p>Thank you! Your responses have been recorded.</p>" +
