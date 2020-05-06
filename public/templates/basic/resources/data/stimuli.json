@@ -1,0 +1,10 @@
+{
+  "stimuli": [
+    {
+      "stimulus": "<p>Here is some text.</p>"
+    },
+    {
+      "stimulus": "<p>Here is some more text.</p>"
+    }
+  ]
+}

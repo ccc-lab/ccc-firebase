@@ -41,7 +41,7 @@ var loadInterval = setInterval(function() {
   * @param {object} json - Object contatining data from the experiment's JSON file.
 */
 function loadExperimentFromJSON(json) {
-  var experiment = new BasicExperiment(_.extend(json, jsPsych.data.urlVariables()));
+  var experiment = new Experiment(_.extend(json, jsPsych.data.urlVariables()));
   initializeExperiment(experiment);
 }
 
@@ -69,7 +69,7 @@ function initializeExperiment(experiment) {
   var vars = jsPsych.data.urlVariables();
 
   // NOTE: Change this to reflect the name of your project.
-  dataRef = storageRef.child('SAMPLE/' + date_string + '/' + experiment.getSubjectId() + '.csv');
+  dataRef = storageRef.child('SAMPLE/' + date_string + '/' + experiment.getParticipantId() + '.csv');
 
   experiment.createTimeline();
   experiment.addPropertiesTojsPsych();
@@ -80,7 +80,7 @@ function initializeExperiment(experiment) {
     display_element: 'jspsych-target',
     on_finish: function() {
       var code = jsPsych.data.getLastTrialData().code;
-      // Add Prolofic redirect here
+      // Add Prolific redirect here
     }
   });
 
@@ -101,7 +101,7 @@ $( document ).ready(function() {
     }
     else {
       console.log('Worker has not yet completed the experiment.');
-      attemptLoad("resources/data/basic.data.json");
+      attemptLoad("resources/data/stimuli.json");
     }
   });
 });
