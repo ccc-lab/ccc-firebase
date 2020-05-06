@@ -1,42 +1,3 @@
-/* Firebase initialization */
-
-/** The Firebase configuration.
-  * @type {object}
-  * @param {string} apiKey - The public API key of the project.
-  * @param {string} databaseURL - The URL of the project's database.
-  * @param {string} storageBucket - The URL of the project's storage bucket.
-*/
-var config = {
-    apiKey: "AIzaSyAlzTpCs3uxIXW6i6I7zsHLElb1GUpoDh8",
-    databaseURL: "https://language-processing-lab.firebaseio.com/",
-    storageBucket: "gs://language-processing-lab.appspot.com"
-};
-firebase.initializeApp(config);
-
-/** A reference to the project's storage bucket.
-*/
-var storageRef = firebase.storage().ref();
-
-/** A reference to the project's database.
-*/
-var database = firebase.database();
-
-
-var dataRef;
-
-/** A silly function to give users feedback while the experiment loads.
-*/
-function makeLoadingFun() {
-  if($('#load-text').html() === 'Loading experiment....')
-    $('#load-text').html('Loading experiment.');
-  else
-    $('#load-text').html($('#load-text').html() + '.');
-}
-
-var loadInterval = setInterval(function() {
-  makeLoadingFun();
-}, 500);
-
 /** Load the experiment with an object as input.
   * @param {object} json - Object contatining data from the experiment's JSON file.
 */
@@ -64,12 +25,12 @@ function attemptLoad(file) {
  * @param {object} BasicExperiment - The instance of the experiment.
 */
 function initializeExperiment(experiment) {
-  var d = new Date();
-  var date_string = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-');
+  var currentDate = new Date();
+  var prettyDate = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-');
   var vars = jsPsych.data.urlVariables();
 
   // NOTE: Change this to reflect the name of your project.
-  dataRef = storageRef.child('SAMPLE/' + date_string + '/' + experiment.getParticipantId() + '.csv');
+  var dataRef = storage.ref().child(experiment.getExperimentId() + prettyDate + '/' + experiment.getParticipantId() + '.csv');
 
   experiment.createTimeline();
   experiment.addPropertiesTojsPsych();
@@ -83,9 +44,6 @@ function initializeExperiment(experiment) {
       // Add Prolific redirect here
     }
   });
-
-  $('#load-text').remove();
-  clearInterval(loadInterval);
 }
 
 $( document ).ready(function() {
