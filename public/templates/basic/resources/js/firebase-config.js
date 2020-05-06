@@ -1,5 +1,5 @@
 // firebase-config.js
-//This file contains the data necessary to connect to your Firebase project.
+// This file contains the data necessary to connect to your Firebase project.
 
 /******************************************************
  * FIREBASE CONFIGURATION - EDIT WITH YOUR DATA
