@@ -16,9 +16,9 @@
  */
 
 var config = {
-    apiKey:        "",       // TODO: Your key goes here
-    databaseURL:   "",  // TODO: "https://your-project.firebaseio.com/"
-    storageBucket: "" // TODO: "gs://your-project.appspot.com"
+  apiKey:        "",       // TODO: Your key goes here
+  databaseURL:   "https://<YOUR FIREBASE>.firebaseio.com", // TODO
+  storageBucket: "gs://<YOUR FIREBASE>.appspot.com"        // TODO
 };
 
 
@@ -30,3 +30,27 @@ firebase.initializeApp(config);
 
 var storage  = firebase.storage();
 var database = firebase.database();
+
+
+/*************************************************************************
+* FIREBASE HELPER FUNCTIONS
+**************************************************************************/
+
+function saveDataToStorage(filedata, dataRef, thenFunc){
+    console.log("Saving progress...");
+    dataRef.putString(filedata).then(thenFunc);
+}
+
+function getParticipantCompletion(participantId, experimentId) {
+    return firebase.database().ref(experimentId + '/' + participantId).once('value');
+}
+
+function addParticipantToDatabase(participantId, experimentId) {
+  if(participantId !== "demo") {
+    var tokenRef = database.ref(experimentId + '/' + participantId);
+    tokenRef.set({
+        complete : 1
+    });
+    console.log("Added participant " + participantId + "to experiment " + experimentId + " with completion value 1.");
+  }
+}
