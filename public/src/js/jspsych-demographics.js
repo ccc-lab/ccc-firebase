@@ -39,31 +39,12 @@ jsPsych.plugins["demographics"] = (function() {
       </div>
       <div class="container">
       <form>
-        <fieldset class="form-group">
-          <div class="row">
-            <legend class="col-form-label col-sm-3">What is your gender?</legend>
-            <div class="col-sm-9">
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="gender" id="gender1" value="0" checked>
-                  Female
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="gender" id="gender2" value="1">
-                  Male
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="gender" id="gender3" value="2">
-                  Other
-                </label>
-              </div>
-            </div>
+        <div class="form-group row">
+          <label for="age" class="col-sm-3 col-form-label">What is your gender?</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="gender" placeholder="" required>
           </div>
-        </fieldset>
+          </div>
         <div class="form-group row">
           <label for="age" class="col-sm-3 col-form-label">What is your age?</label>
           <div class="col-sm-3">
@@ -76,8 +57,8 @@ jsPsych.plugins["demographics"] = (function() {
             <select style="width: 200px;" class="form-control" id="state" id="state" required>
                 <option value="">Please select...</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District Of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
             </select>
-            <small class="form-text text-muted">
-              If you lived in multiple states, try to choose the one you spent the most time in.
+            <small class="form-text text-muted" style="text-align: left">
+              If you have lived in multiple states, try to choose the one you spent the most time in.
             </small>
           </div>
         </div>
@@ -85,7 +66,7 @@ jsPsych.plugins["demographics"] = (function() {
           <label for="age" class="col-sm-3 col-form-label">What is your native language?</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="natLg" placeholder="" required>
-            <small id="passwordHelpBlock" class="form-text text-muted">
+            <small id="passwordHelpBlock" class="form-text text-muted" style="text-align: left">
               This is the language you primarily spoke in and were spoken to in from birth through age 12.
             </small>
           </div>
@@ -94,7 +75,7 @@ jsPsych.plugins["demographics"] = (function() {
           <label for="domLg" class="col-sm-3 col-form-label">What is your dominant language?</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="domLg" placeholder="" required>
-            <small id="passwordHelpBlock" class="form-text text-muted">
+            <small id="passwordHelpBlock" class="form-text text-muted" style="text-align: left">
               This is the language you use the most in daily life.
             </small>
           </div>
@@ -103,7 +84,7 @@ jsPsych.plugins["demographics"] = (function() {
           <label for="parentLg" class="col-sm-3 col-form-label">What language(s) do your parent speak?</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="parentLg" placeholder="" required>
-            <small class="form-text text-muted">
+            <small class="form-text text-muted" style="text-align: left">
               Please separate the languages using commas (,).
             </small>
           </div>
@@ -202,7 +183,7 @@ jsPsych.plugins["demographics"] = (function() {
       var rt = end_time - start_time;
 
       response.rt = rt;
-      demographics.gender = $('input[name=gender]:checked').val();
+      demographics.gender = $('input[name=gender]').val();
       demographics.age = age;
       demographics.state = $('select[id=state]').val();
       demographics.native_lg = $('input[id=natLg]').val();

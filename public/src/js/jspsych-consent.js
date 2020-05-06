@@ -22,6 +22,13 @@ jsPsych.plugins["consent"] = (function() {
         array: false,
         description: 'Button HTML.'
       }
+    },
+    placeholder: {
+      type: jsPsych.plugins.parameterType.STRING,
+      pretty_name: 'Placeholder',
+      default: undefined,
+      array: false,
+      description: 'Placeholder.'
     }
   }
 
