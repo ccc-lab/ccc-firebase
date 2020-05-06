@@ -17,14 +17,23 @@ function Experiment(params) {
   var timeline = [];
 
   // Initialize a variable to store participant information
-  // NOTE: Add more subject parameters here if needed.
+  // TODO: Add more participant parameters here if needed.
   var participant = {
     id: params.participantId
+  }
+
+  // Initialize a variable to store experiment information
+  // TODO: Add more experiment parameters here if needed.
+  var experiment = {
+    id: params.experimentId
   }
 
   // Getter functions
   this.getParticipantId = function() { // Return current participant's ID
     return participant.id;
+  }
+  this.getExperimentId = function() { // Return experiment's ID
+    return experiment.id;
   }
   this.getTimeline = function() { // Return the timeline
     return timeline;
