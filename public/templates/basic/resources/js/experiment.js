@@ -1,3 +1,12 @@
+// experiment.js
+
+// This file defines the Experiment object that is initialized in runner.js.
+// The experiment's timeline and trials live here.
+
+// Stimuli are defined in data/stimuli.json. This file is loaded by runner.js.
+// The contents of this file are passed to the params variable of the
+// Experiment object.
+
 function Experiment(params) {
 
   /*************************************************************************

@@ -312,6 +312,5 @@
     }
 
     timeline.push(end);
-  }
 
 };
