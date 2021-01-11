@@ -72,11 +72,11 @@ This file contains the HTML backbone of the experiment. In most cases, it is qui
 
 ```
 
-Typically, the only changes that would be made to this file are (1) adding additional jsPsych plugins under "jsPsych Plugins" and (2) adding additional experiment code under "Experiment code and utilities". 
+Typically, the only changes that would be made to this file are (1) including additional jsPsych plugins under "jsPsych Plugins" and (2) including additional JavaScript files under "Experiment code and utilities". 
 
 ### resources/
 
-The resources folder is used to hold all code and data needed to run the experiment,. This includes the .js files that define the experiment procedues, lists of stimuli, and the stimuli themselves. It is recommended that audio files be placed in `resources/data/audio`, images be placed in `resources/data/images`, and so on.
+The resources folder is used to hold all code and data needed to run the experiment,. This includes the .js file(s) that define the experiment procedure, lists of stimuli, and the stimuli themselves. It is recommended that audio files be placed in `resources/data/audio`, images be placed in `resources/data/images`, and so on.
 
 #### resources/data/stimuli.json
 
