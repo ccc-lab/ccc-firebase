@@ -219,6 +219,11 @@ a.list-item:hover {
   background: #800000;
 }
 
+.large {
+  font-size: 120%;
+  line-height: 120%
+}
+
 .huge {
   font-size: 180%;
   line-height: 180%
