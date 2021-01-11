@@ -76,7 +76,7 @@ Typically, the only changes that would be made to this file are (1) including ad
 
 ### resources/
 
-The resources folder is used to hold all code and data needed to run the experiment,. This includes the .js file(s) that define the experiment procedure, lists of stimuli, and the stimuli themselves. It is recommended that audio files be placed in `resources/data/audio`, images be placed in `resources/data/images`, and so on.
+The `resources/` folder is used to hold all code and data needed to run the experiment,. This includes the .js file(s) that define the experiment procedure, lists of stimuli, and the stimuli themselves. It is recommended that audio files be placed in `resources/data/audio`, images be placed in `resources/data/images`, and so on.
 
 #### resources/data/stimuli.json
 
@@ -104,9 +104,9 @@ This file is used to define the stimuli for the experiment in JSON format, as we
 
 All JavaScript code is placed in this folder. The sample experiment contains three files: `experiment.js`, `runner.js`, and `firebase-config.js`. 
 
-- experiment.js is where the the actual experimental procedure is defined. **This is typically the only file you need to edit.**
-- firebase-config.js contains the API keys for Firebase as well as various helper functions. Unless you are using a different Firebase site from the lab's, this file does not need to be edited.
-- runner.js launches the experiment defined in `experiment.js`. There is only one place in this file you may need to edit, which is the email that is displayed when someone tries to access the experiment after completing it (line 98):
+- `experiment.js` is where the the actual experimental procedure is defined. **This is typically the only file you need to edit.**
+- `firebase-config.js` contains the API keys for Firebase as well as various helper functions. Unless you are using a different Firebase site from the lab's, this file does not need to be edited.
+- `runner.js` launches the experiment defined in `experiment.js`. There is only one place in this file you may need to edit, which is the email that is displayed when someone tries to access the experiment after completing it (line 98):
   ```JavaScript
   function showUserError() {
     $( '#jspsych-target' ).append($('<div>', {
@@ -125,7 +125,8 @@ All JavaScript code is placed in this folder. The sample experiment contains thr
 
 ## Setting up Firebase
 
-### Step 1: Set up Firebase on your computer
+### Step 1: Install the Firebase command line tools
+
 1. Download and install [Node.js](nodejs.org/)
 2. Install `firebase-tools` via the command `npm install -g firebase-tools`
 
@@ -133,7 +134,7 @@ All JavaScript code is placed in this folder. The sample experiment contains thr
 
 You have two options:
 
-1. Log into the [Firebase Console](firebase.google.com/) using a Google account and create a new project
+1. Log into the [Firebase Console](firebase.google.com/) using your preferred Google account and create a new project.
 2. Request access to the lab's Firebase project. You can email arkram AT umich DOT edu for access.
 
 ### Step 3: Link your local project to the console
@@ -142,13 +143,13 @@ You have two options:
 2. `cd` into the directory you'd like to link to your online project. If you are using the lab's project, this will be the folder you downloaded in step 1.
 3. Run the command `firebase init`.
 4. When asked "Which Firebase CLI features do you want to set up for this folder?" select "Database", "Hosting", and "Storage".
-5. You will be prompted to choose and existing project or create a new one. Select "Use an existing project". At this point you may be asked to log into Firebase if you haven't already.
+5. You will be prompted to choose an existing project or create a new one. Select "Use an existing project". At this point you may be asked to log into Firebase if you haven't already.
 6. Select the project you would like to associate with your local directory. If you are using the lab's project, it will be called `ccclab-573ff (CCCLab)`.
 7. Press enter to select the default options for any remaining questions. (Unless you know what you are doing and want to change them!)
 
 ## Testing and publishing experiments
 
-To test experiments locally, simply run `firebase serve` and navigate to your experiment's "experiment.html" page (typically http://localhost:5000/{EXPERIMENT_FOLDER}/experiment.html). To publish changes to the Firebase Console, run `firebase deploy`. If your experiment is being hosted by the lab, it can be found at https://ccclab-573ff.firebaseapp.com/{EXPERIMENT_NAME}/experiment.html.
+To test experiments locally, simply run `firebase serve` and navigate to your experiment's "experiment.html" page (typically http://localhost:5000/{EXPERIMENT_FOLDER}/experiment.html). To publish your local changes to the online project, run `firebase deploy`. If your experiment is being hosted by the lab, it can be found at https://ccclab-573ff.firebaseapp.com/{EXPERIMENT_NAME}/experiment.html.
 
 ----
 
